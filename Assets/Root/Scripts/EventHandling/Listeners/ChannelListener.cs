@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
+using YagizAyer.Root.Scripts.Helpers;
 
 namespace YagizAyer.Root.Scripts.EventHandling.Listeners
 {
-    public sealed class InputChannelListener : MonoBehaviour
+    public sealed class ChannelListener : MonoBehaviour
     {
         [SerializeField]
-        private InputChannels channel;
+        private Channels channel;
+
         [SerializeField]
         private UnityEvent<IPassableData> onEventRaised;
 
@@ -21,8 +23,10 @@ namespace YagizAyer.Root.Scripts.EventHandling.Listeners
         }
 
         private void OnDisable() => channel.Unsubscribe(_listener);
-        
+
         [ContextMenu("Debug Raise")]
         public void DebugRaise() => onEventRaised.Invoke(null);
+
+        public void ConsoleLog(IPassableData data) => data.ConsoleLog();
     }
 }

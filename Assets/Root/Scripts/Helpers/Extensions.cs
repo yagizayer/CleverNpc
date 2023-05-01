@@ -8,10 +8,26 @@ namespace YagizAyer.Root.Scripts.Helpers
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Clones the list.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static List<T> Clone<T>(this IEnumerable<T> list) => new(list);
         
+        /// <summary>
+        /// Converts the value to IPassableData.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IPassableData ToPassableData<T>(this T value) => new PassableDataBase<T>(value);
 
+        /// <summary>
+        ///  Logs the value of the IPassableData to the console.
+        /// </summary>
+        /// <param name="rawData">The IPassableData to log.</param>
         public static void ConsoleLog(this IPassableData rawData)
         {
             switch (rawData)
@@ -50,6 +66,54 @@ namespace YagizAyer.Root.Scripts.Helpers
                     Debug.Log("No data");
                     break;
             }
+        }
+        
+        /// <summary>
+        /// Validates given IPassableData and returns true if it is valid
+        /// </summary>
+        /// <param name="rawData">Given IPassableData</param>
+        /// <param name="data">Validated data</param>
+        /// <typeparam name="T">Type of data</typeparam>
+        /// <returns>True if data is valid</returns>
+        public static bool Validate<T>(this IPassableData rawData, out PassableDataBase<T> data)
+        {
+            data = rawData as PassableDataBase<T>;
+            return data != null;
+        }
+        
+        /// <summary>
+        ///     Gives relative direction of caller vector based on cameras forward vector
+        /// </summary>
+        /// <param name="me">caller vector(usually movement direction)</param>
+        /// <param name="currentCamera">camera to relate operation</param>
+        /// <returns>relative direction based on given camera</returns>
+        public static Vector3 RelativeToCamera(this Vector3 me, Transform currentCamera)
+        {
+            var cameraForwardNormalized = Vector3.ProjectOnPlane(currentCamera.forward, Vector3.up);
+            var rotationToCamNormal = Quaternion.LookRotation(cameraForwardNormalized, Vector3.up);
+
+            var finalMoveDir = rotationToCamNormal * me;
+            return finalMoveDir;
+        }
+
+        public static Vector3 RelativeToCamera(this Vector3 me, Camera currentCamera)
+        {
+            return RelativeToCamera(me, currentCamera.transform);
+        }
+
+        /// <summary>
+        ///     Returns given vector with projected values based on given vector normal
+        /// </summary>
+        /// <param name="me">given vector</param>
+        /// <param name="planeNormal">plane normal</param>
+        /// <returns>Projected vector</returns>
+        public static Vector3 OnPlane(this Vector3 me, Vector3 planeNormal = default)
+        {
+            if (planeNormal == default)
+                planeNormal = Vector3.up;
+
+            planeNormal.Normalize();
+            return Vector3.ProjectOnPlane(me, planeNormal);
         }
     }
 }

@@ -30,6 +30,9 @@ namespace YagizAyer.Root.Scripts.Managers
         public void OnInteract(InputAction.CallbackContext context) =>
             Channels.GameplayInteract.Raise(context.started.ToPassableData());
 
+        public void OnCamera(InputAction.CallbackContext context) =>
+            Channels.GameplayCamera.Raise(context.ReadValue<Vector2>().ToPassableData());
+
         public void OnNext(InputAction.CallbackContext context) =>
             Channels.MenuNext.Raise(context.started.ToPassableData());
     }

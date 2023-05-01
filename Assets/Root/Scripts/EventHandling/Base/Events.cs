@@ -5,6 +5,7 @@ namespace YagizAyer.Root.Scripts.EventHandling.Base
         Null = 0,
         GameplayMovement = 10,
         GameplayInteract = 20,
+        GameplayCamera = 25,
         MenuNext = 30,
     }
 }

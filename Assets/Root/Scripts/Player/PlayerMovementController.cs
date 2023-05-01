@@ -25,26 +25,26 @@ namespace YagizAyer.Root.Scripts.Player
             UpdatePosition();
         }
 
-        public override void OnCameraInput(Vector2 mouseDelta)
+        public override void OnCameraInput(Vector2 data)
         {
             _rotation = PlayerManager.mainCamera.transform.forward.OnPlane();
         }
 
-        public override void OnMovementInput(Vector2 movementInput)
+        public override void OnMovementInput(Vector2 data)
         {
-            var movementDirection = new Vector3(movementInput.x, 0, movementInput.y).normalized;
+            var movementDirection = new Vector3(data.x, 0, data.y).normalized;
 
             _positionOffset = movementDirection * (movementSpeed * Time.deltaTime);
         }
 
-        public override void OnInteractInput(bool isInteractionCalled)
+        public override void OnInteractInput(bool data)
         {
-            Debug.Log(isInteractionCalled);
+            Debug.Log(data);
         }
 
-        public override void OnNextDialogInput(bool isNextDialogCalled)
+        public override void OnNextDialogInput(bool data)
         {
-            Debug.Log(isNextDialogCalled);
+            Debug.Log(data);
         }
 
         private void UpdateRotation() =>

@@ -15,7 +15,7 @@ namespace YagizAyer.Root.Scripts.Helpers
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static List<T> Clone<T>(this IEnumerable<T> list) => new(list);
-        
+
         /// <summary>
         /// Converts the value to IPassableData.
         /// </summary>
@@ -67,7 +67,7 @@ namespace YagizAyer.Root.Scripts.Helpers
                     break;
             }
         }
-        
+
         /// <summary>
         /// Validates given IPassableData and returns true if it is valid
         /// </summary>
@@ -80,7 +80,7 @@ namespace YagizAyer.Root.Scripts.Helpers
             data = rawData as PassableDataBase<T>;
             return data != null;
         }
-        
+
         /// <summary>
         ///     Gives relative direction of caller vector based on cameras forward vector
         /// </summary>
@@ -115,5 +115,12 @@ namespace YagizAyer.Root.Scripts.Helpers
             planeNormal.Normalize();
             return Vector3.ProjectOnPlane(me, planeNormal);
         }
+
+        /// <summary>
+        /// Converts given vector to quaternion
+        /// </summary>
+        /// <param name="me"> given vector</param>
+        /// <returns>converted quaternion</returns>
+        public static Quaternion ToQuaternion(this Vector3 me) => Quaternion.Euler(me);
     }
 }

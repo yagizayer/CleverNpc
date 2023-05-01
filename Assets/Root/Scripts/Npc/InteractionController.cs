@@ -1,5 +1,6 @@
 // InteractionController.cs
 
+using System;
 using UnityEngine;
 
 namespace YagizAyer.Root.Scripts.Npc
@@ -9,24 +10,20 @@ namespace YagizAyer.Root.Scripts.Npc
         [SerializeField]
         private GameObject interactionUI;
 
-        private bool _isPlayerInRange;
-        private bool IsInteractable => _isPlayerInRange;
-        private Camera _mainCamera;
-        
         protected override void OnEnable()
         {
             base.OnEnable();
             interactionUI.SetActive(false);
-            _mainCamera = Camera.main;
         }
 
-        private void Update() => interactionUI.transform.forward = _mainCamera.transform.forward;
-
-        public void SetIsPlayerInRange(bool isPlayerInRange)
+        private void Update()
         {
-            _isPlayerInRange = isPlayerInRange;
-            interactionUI.SetActive(IsInteractable);
+            if(NpcManager.MainCamera is null) return;
+            interactionUI.transform.LookAt(NpcManager.MainCamera.transform);
         }
+
+        public void OnPlayerEnterRange() => interactionUI.SetActive(true);
         
+        public void OnPlayerExitRange() => interactionUI.SetActive(false);
     }
 }

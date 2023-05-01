@@ -7,111 +7,75 @@ namespace YagizAyer.Root.Scripts.Helpers
     public class EventForwarder : MonoBehaviour
     {
         [SerializeField]
-        private UnitySpecificEvents targetEvent;
+        private UnityNoParamEvents targetEvent;
         
         [TagField]
         [SerializeField]
         private string targetTag = "Player";
 
         [SerializeField]
-        private UnityEvent onTargetEventNoParam;
+        private UnityEvent onTargetEvent;
 
         #region Unity Methods
 
         private void Awake()
         {
-            if (targetEvent == UnitySpecificEvents.Awake)
-                onTargetEventNoParam?.Invoke();
+            if (targetEvent == UnityNoParamEvents.Awake)
+                onTargetEvent?.Invoke();
         }
         
         private void Start()
         {
-            if (targetEvent == UnitySpecificEvents.Start)
-                onTargetEventNoParam?.Invoke();
+            if (targetEvent == UnityNoParamEvents.Start)
+                onTargetEvent?.Invoke();
         }
         
         private void Update()
         {
-            if (targetEvent == UnitySpecificEvents.Update)
-                onTargetEventNoParam?.Invoke();
+            if (targetEvent == UnityNoParamEvents.Update)
+                onTargetEvent?.Invoke();
         }
         
         private void FixedUpdate()
         {
-            if (targetEvent == UnitySpecificEvents.FixedUpdate)
-                onTargetEventNoParam?.Invoke();
+            if (targetEvent == UnityNoParamEvents.FixedUpdate)
+                onTargetEvent?.Invoke();
         }
         
         private void LateUpdate()
         {
-            if (targetEvent == UnitySpecificEvents.LateUpdate)
-                onTargetEventNoParam?.Invoke();
+            if (targetEvent == UnityNoParamEvents.LateUpdate)
+                onTargetEvent?.Invoke();
         }
         
         private void OnEnable()
         {
-            if (targetEvent == UnitySpecificEvents.OnEnable)
-                onTargetEventNoParam?.Invoke();
+            if (targetEvent == UnityNoParamEvents.OnEnable)
+                onTargetEvent?.Invoke();
         }
         
         private void OnDisable()
         {
-            if (targetEvent == UnitySpecificEvents.OnDisable)
-                onTargetEventNoParam?.Invoke();
+            if (targetEvent == UnityNoParamEvents.OnDisable)
+                onTargetEvent?.Invoke();
         }
         
         private void OnDestroy()
         {
-            if (targetEvent == UnitySpecificEvents.OnDestroy)
-                onTargetEventNoParam?.Invoke();
-        }
-        
-        private void OnTriggerEnter(Collider other)
-        {
-            if (targetEvent == UnitySpecificEvents.OnTriggerEnter && other.CompareTag(targetTag))
-                onTargetEventNoParam?.Invoke();
-        }
-        
-        private void OnTriggerStay(Collider other)
-        {
-            if (targetEvent == UnitySpecificEvents.OnTriggerStay && other.CompareTag(targetTag))
-                onTargetEventNoParam?.Invoke();
-        }
-        
-        private void OnTriggerExit(Collider other)
-        {
-            if (targetEvent == UnitySpecificEvents.OnTriggerExit && other.CompareTag(targetTag))
-                onTargetEventNoParam?.Invoke();
-        }
-        
-        private void OnCollisionEnter(Collision other)
-        {
-            if (targetEvent == UnitySpecificEvents.OnCollisionEnter && other.collider.CompareTag(targetTag))
-                onTargetEventNoParam?.Invoke();
-        }
-        
-        private void OnCollisionStay(Collision other)
-        {
-            if (targetEvent == UnitySpecificEvents.OnCollisionStay && other.collider.CompareTag(targetTag))
-                onTargetEventNoParam?.Invoke();
-        }
-        
-        private void OnCollisionExit(Collision other)
-        {
-            if (targetEvent == UnitySpecificEvents.OnCollisionExit && other.collider.CompareTag(targetTag))
-                onTargetEventNoParam?.Invoke();
+            if (targetEvent == UnityNoParamEvents.OnDestroy)
+                onTargetEvent?.Invoke();
         }
         
         private void OnBecameVisible()
         {
-            if (targetEvent == UnitySpecificEvents.OnBecameVisible)
-                onTargetEventNoParam?.Invoke();
+            if (targetEvent == UnityNoParamEvents.OnBecameVisible)
+                onTargetEvent?.Invoke();
         }
         
         private void OnBecameInvisible()
         {
-            if (targetEvent == UnitySpecificEvents.OnBecameInvisible)
-                onTargetEventNoParam?.Invoke();
+            if (targetEvent == UnityNoParamEvents.OnBecameInvisible)
+                onTargetEvent?.Invoke();
         }
 
         #endregion

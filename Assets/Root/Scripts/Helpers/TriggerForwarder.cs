@@ -14,7 +14,7 @@ namespace YagizAyer.Root.Scripts.Helpers
         private string targetTag = "Player";
 
         [SerializeField]
-        private UnityEvent<Collider> onTargetEvent;
+        private UnityEvent<Collider> onTargetEvent = new();
 
         #region Unity Methods
         

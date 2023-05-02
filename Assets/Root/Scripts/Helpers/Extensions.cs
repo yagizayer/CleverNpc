@@ -1,6 +1,7 @@
 // Extensions.cs
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 
@@ -122,5 +123,18 @@ namespace YagizAyer.Root.Scripts.Helpers
         /// <param name="me"> given vector</param>
         /// <returns>converted quaternion</returns>
         public static Quaternion ToQuaternion(this Vector3 me) => Quaternion.Euler(me);
+
+        public static bool TryGetValue<TKey, TVal, TTargetType>(this Dictionary<TKey, TVal> dict, TKey key,
+            out TTargetType value) where TTargetType : TVal
+        {
+            if (dict.TryGetValue(key, out var val))
+            {
+                value = (TTargetType)val;
+                return true;
+            }
+
+            value = default;
+            return false;
+        }
     }
 }

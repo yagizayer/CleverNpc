@@ -30,13 +30,13 @@ namespace YagizAyer.Root.Scripts.Player
         public void OnNpcEnterRange(Collider other)
         {
             if (!other.TryGetComponent(out NpcManager npc)) return;
-            npc.OnPlayerEnterRange();
+            npc.OnPlayerEnterRange(PlayerManager.transform);
         }
 
         public void OnNpcExitRange(Collider other)
         {
             if (!other.TryGetComponent(out NpcManager npc)) return;
-            npc.OnPlayerExitRange();
+            npc.OnPlayerExitRange(PlayerManager.transform);
         }
     }
 }

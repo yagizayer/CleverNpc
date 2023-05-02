@@ -1,8 +1,9 @@
 // NpcManager.cs
 
 using System;
-using System.Linq;
 using UnityEngine;
+using System.Collections.Generic;
+using YagizAyer.Root.Scripts.Helpers;
 
 namespace YagizAyer.Root.Scripts.Npc
 {
@@ -12,23 +13,37 @@ namespace YagizAyer.Root.Scripts.Npc
         private NpcComponent[] controllers;
 
         internal Camera MainCamera;
+        private Dictionary<Type, NpcComponent> ControllersDict { get; } = new();
 
         private void OnEnable()
         {
             controllers = GetComponentsInChildren<NpcComponent>();
             MainCamera = Camera.main;
+            foreach (var controller in controllers) ControllersDict.Add(controller.GetType(), controller);
         }
 
-        public void OnPlayerEnterRange()
+        public void OnPlayerEnterRange(Transform player)
         {
-            var controller = controllers.FirstOrDefault(component => component is InteractionController) as InteractionController;
-            controller!.OnPlayerEnterRange();
+            if (ControllersDict.TryGetValue(
+                    typeof(InteractionController),
+                    out InteractionController interactionController)
+               ) interactionController!.OnPlayerEnterRange();
+            if (ControllersDict.TryGetValue(
+                    typeof(MovementController),
+                    out MovementController movementController)
+               ) movementController!.StartLookingAt(player);
         }
-        
-        public void OnPlayerExitRange()
+
+        public void OnPlayerExitRange(Transform player)
         {
-            var controller = controllers.FirstOrDefault(component => component is InteractionController) as InteractionController;
-            controller!.OnPlayerExitRange();
+            if (ControllersDict.TryGetValue(
+                    typeof(InteractionController),
+                    out InteractionController interactionController)
+               ) interactionController!.OnPlayerExitRange();
+            if (ControllersDict.TryGetValue(
+                    typeof(MovementController),
+                    out MovementController movementController)
+               ) movementController!.StopLookingAt();
         }
     }
 }

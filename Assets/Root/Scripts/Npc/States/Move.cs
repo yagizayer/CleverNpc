@@ -10,14 +10,13 @@ namespace YagizAyer.Root.Scripts.Npc.States
 {
     public class Move : State<NpcManager>
     {
-        [SerializeField]
-        internal NavMeshAgent agent;
-
-        public Transform MoveTarget { get; private set; }
+        private NavMeshAgent _agent;
+        private Transform _moveTarget;
 
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
-            if (rawData.Validate(out PassableDataBase<Vector3> v3Data)) agent.SetDestination(v3Data.Value);
+            _agent ??= MyOwner.GetComponent<NavMeshAgent>();
+            if (rawData.Validate(out PassableDataBase<Vector3> v3Data)) _agent.SetDestination(v3Data.Value);
             if (rawData.Validate(out PassableDataBase<Transform> trData)) StartCoroutine(MoveToTarget_CO(trData.Value));
         }
 
@@ -28,16 +27,16 @@ namespace YagizAyer.Root.Scripts.Npc.States
 
         public override void OnExitState(NpcManager stateManager, IPassableData rawData = null)
         {
-            MoveTarget = null;
+            _moveTarget = null;
         }
 
         private IEnumerator MoveToTarget_CO(Transform target)
         {
-            MoveTarget = target;
+            _moveTarget = target;
             var waitDuration = new WaitForSeconds(0.1f);
-            while (MoveTarget is not null)
+            while (_moveTarget is not null)
             {
-                agent.SetDestination(MoveTarget.position);
+                _agent.SetDestination(_moveTarget.position);
                 yield return waitDuration;
             }
         }

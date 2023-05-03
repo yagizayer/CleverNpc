@@ -102,43 +102,79 @@ namespace YagizAyer.Root.Scripts.Helpers
             data = rawData as PassableDataBase<T>;
             return data != null;
         }
-
+        
         /// <summary>
-        ///     Gives relative direction of caller vector based on cameras forward vector
+        /// Converts the string to json format.
         /// </summary>
-        /// <param name="me">caller vector(usually movement direction)</param>
-        /// <param name="currentCamera">camera to relate operation</param>
-        /// <returns>relative direction based on given camera</returns>
-        public static Vector3 RelativeToCamera(this Vector3 me, Transform currentCamera)
+        /// <param name="str"> The string to convert.</param>
+        /// <returns> The json formatted string.</returns>
+        public static string ToJson(this string str)
         {
-            var cameraForwardNormalized = Vector3.ProjectOnPlane(currentCamera.forward, Vector3.up);
-            var rotationToCamNormal = Quaternion.LookRotation(cameraForwardNormalized, Vector3.up);
-
-            var finalMoveDir = rotationToCamNormal * me;
-            return finalMoveDir;
-        }
-
-        /// <summary>
-        ///  Returns true if given key exists in the dictionary and casts the value to given type.
-        /// </summary>
-        /// <param name="dict"> Dictionary to search in.</param>
-        /// <param name="key"> Key to search for.</param>
-        /// <param name="value"> Value to cast to.</param>
-        /// <typeparam name="TKey"> Type of the key.</typeparam>
-        /// <typeparam name="TVal"> Type of the value.</typeparam>
-        /// <typeparam name="TTargetType"> Type of the target type.</typeparam>
-        /// <returns> True if key exists in the dictionary.</returns>
-        public static bool TryGetValue<TKey, TVal, TTargetType>(this Dictionary<TKey, TVal> dict, TKey key,
-            out TTargetType value) where TTargetType : TVal
-        {
-            if (dict.TryGetValue(key, out var val))
+            var indent = 0;
+            var quoted = false;
+            var sb = new System.Text.StringBuilder();
+            foreach (var ch in str)
             {
-                value = (TTargetType)val;
-                return true;
+                switch (ch)
+                {
+                    case '{':
+                    case '[':
+                        sb.Append(ch);
+                        if (!quoted)
+                        {
+                            sb.AppendLine();
+                            sb.Append(' ', ++indent * 4);
+                        }
+
+                        break;
+                    case '}':
+                    case ']':
+                        if (!quoted)
+                        {
+                            sb.AppendLine();
+                            sb.Append(' ', --indent * 4);
+                        }
+
+                        sb.Append(ch);
+                        break;
+                    case ',':
+                        sb.Append(ch);
+                        if (!quoted)
+                        {
+                            sb.AppendLine();
+                            sb.Append(' ', indent * 4);
+                        }
+
+                        break;
+                    case '"':
+                        sb.Append(ch);
+                        var escaped = false;
+                        var index = sb.Length - 2;
+                        while (index >= 0 && sb[index] == '\\')
+                        {
+                            escaped = !escaped;
+                            index--;
+                        }
+
+                        if (!escaped)
+                            quoted = !quoted;
+
+                        break;
+                    default:
+                        sb.Append(ch);
+                        break;
+                }
             }
 
-            value = default;
-            return false;
+            return sb.ToString().Trim();
         }
+
+        /// <summary>
+        ///  Encodes the object as json.
+        /// </summary>
+        /// <param name="obj"> The object to encode.</param>
+        /// <typeparam name="T"> The type of the object.</typeparam>
+        /// <returns> The encoded object as json.</returns>
+        public static byte[] EncodeAsJson<T>(this T obj) => System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(obj));
     }
 }

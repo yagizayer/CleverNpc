@@ -10,10 +10,11 @@ namespace YagizAyer.Root.Scripts.Helpers
     public abstract class State<TOwner> : MonoBehaviour
     {
         [SerializeField]
-        private List<State<TOwner>> interruptors = new(); 
+        [Tooltip("The states below cannot interrupt this state")]
+        private List<State<TOwner>> excludedInterrupters = new(); 
 
         public TOwner MyOwner { get; set; }
-        public List<State<TOwner>> Interruptors => interruptors;
+        public List<State<TOwner>> ExcludedInterrupters => excludedInterrupters;
         public abstract void OnEnterState(TOwner stateManager, IPassableData rawData = null);
         public abstract void OnUpdateState(TOwner stateManager, IPassableData rawData = null);
         public abstract void OnExitState(TOwner stateManager, IPassableData rawData = null);

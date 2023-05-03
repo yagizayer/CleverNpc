@@ -37,8 +37,7 @@ namespace YagizAyer.Root.Scripts.Managers
             if (CurrentState != null)
             {
                 if (CurrentState != newState) CurrentState.OnExitState(this as TOwner, rawData);
-                // if newState is not an interruptor and not the same as current state, return
-                if (!(CurrentState.Interruptors.Contains(newState) || CurrentState == newState)) return;
+                if (CurrentState.ExcludedInterrupters.Contains(newState)) return;
             }
 
             CurrentState = newState;

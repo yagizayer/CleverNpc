@@ -16,7 +16,7 @@ namespace YagizAyer.Root.Scripts.Npc.States
         [SerializeField]
         private float rotationSpeed;
 
-        public Transform LookTarget { get; private set; }
+        private Transform _lookTarget;
 
         protected void OnEnable() => interactionUI.SetActive(false);
 
@@ -24,20 +24,20 @@ namespace YagizAyer.Root.Scripts.Npc.States
         {
             interactionUI.SetActive(true);
             if (rawData.Validate(out PassableDataBase<Transform> data))
-                LookTarget = data.Value;
+                _lookTarget = data.Value;
         }
 
         public override void OnUpdateState(NpcManager stateManager, IPassableData rawData = null)
         {
-            if (LookTarget is null) return;
-            var targetRotation = Quaternion.LookRotation(LookTarget.position - transform.position);
+            if (_lookTarget is null) return;
+            var targetRotation = Quaternion.LookRotation(_lookTarget.position - transform.position);
             MyOwner.transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
         }
 
         public override void OnExitState(NpcManager stateManager, IPassableData rawData = null)
         {
             interactionUI.SetActive(false);
-            LookTarget = null;
+            _lookTarget = null;
         }
     }
 }

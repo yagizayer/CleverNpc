@@ -1,10 +1,13 @@
 using UnityEngine;
 
-namespace YagizAyer.Root.Scripts.ApiBase
+namespace YagizAyer.Root.Scripts.OpenAIApiBase
 {
     [CreateAssetMenu(fileName = "RequestPreset", menuName = "RequestPreset")]
     public class RequestPreset : ScriptableObject
     {
+        [SerializeField]
+        private Engines engine = Engines.Davinci;
+
         [Range(0, 250)]
         [SerializeField]
         private int maxTokens = 5;
@@ -32,6 +35,7 @@ namespace YagizAyer.Root.Scripts.ApiBase
         {
             var result = new
             {
+                model = engine.ToEngineString(),
                 prompt = prompt,
                 temperature = temperature,
                 max_tokens = maxTokens,

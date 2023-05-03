@@ -1,6 +1,6 @@
 using System;
 
-namespace YagizAyer.Root.Scripts.ApiBase
+namespace YagizAyer.Root.Scripts.OpenAIApiBase
 {
     public enum Engines
     {

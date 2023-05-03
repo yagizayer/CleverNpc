@@ -23,8 +23,6 @@ namespace YagizAyer.Root.Scripts.Player.States
 
         public override void OnUpdateState(PlayerManager stateManager, IPassableData rawData = null)
         {
-            OnEnterState(stateManager, rawData);
-            
             if (_positionOffset == Vector3.zero)
             {
                 MyOwner.SetState<Idle>();

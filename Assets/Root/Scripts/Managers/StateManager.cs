@@ -35,7 +35,11 @@ namespace YagizAyer.Root.Scripts.Managers
         public void SetState(State<TOwner> newState, IPassableData rawData = null)
         {
             if (CurrentState != null)
-                CurrentState.OnExitState(this as TOwner, rawData);
+            {
+                if (CurrentState != newState) CurrentState.OnExitState(this as TOwner, rawData);
+                // if newState is not an interruptor and not the same as current state, return
+                if (!(CurrentState.Interruptors.Contains(newState) || CurrentState == newState)) return;
+            }
 
             CurrentState = newState;
 

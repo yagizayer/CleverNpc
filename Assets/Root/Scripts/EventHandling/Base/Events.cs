@@ -7,5 +7,6 @@ namespace YagizAyer.Root.Scripts.EventHandling.Base
         GameplayInteract = 20,
         GameplayCamera = 25,
         MenuNext = 30,
+        ConversationStart = 40,
     }
 }

@@ -373,6 +373,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f5f4e66cb4412598ea0f6f83223200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interruptors:
+  - {fileID: 292487791}
+  - {fileID: 292487792}
   agent: {fileID: 1255436676}
 --- !u!114 &292487791
 MonoBehaviour:
@@ -386,6 +389,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc7dc66a1694e43944b5556af3c3f59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interruptors:
+  - {fileID: 292487790}
+  - {fileID: 292487792}
 --- !u!114 &292487792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,6 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0bc97631f1d4ce2af70fc7bc7465a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interruptors: []
 --- !u!1 &337870115
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,6 +452,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b462ace23254883ab6c0365151340a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interruptors:
+  - {fileID: 337870118}
+  - {fileID: 337870119}
+  - {fileID: 337870120}
   interactionUI: {fileID: 1134033956}
   rotationSpeed: 5
 --- !u!114 &337870118
@@ -459,6 +470,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf733bbc48904dac898fca046e5d0589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interruptors:
+  - {fileID: 337870119}
+  - {fileID: 337870120}
   agent: {fileID: 1071742545}
 --- !u!114 &337870119
 MonoBehaviour:
@@ -472,6 +486,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db49d6ccba744a4896f3ad4399aa90a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interruptors:
+  - {fileID: 337870118}
+  - {fileID: 337870117}
+  - {fileID: 337870120}
 --- !u!114 &337870120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,6 +502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8835916a8e45e686cd7fdc545c13c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interruptors: []
 --- !u!1 &363372739
 GameObject:
   m_ObjectHideFlags: 0
@@ -1253,7 +1272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -10}
+  m_FollowOffset: {x: 0, y: 0, z: 0}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1567,8 +1586,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_LookAt: {fileID: 1255436669}
+  m_Follow: {fileID: 1255436669}
   m_CommonLens: 1
   m_Lens:
     FieldOfView: 80
@@ -1913,7 +1932,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037173684}
-  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291947, z: -6.8140116e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
   m_LocalPosition: {x: 3, y: 6.05, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2000,6 +2019,7 @@ GameObject:
   - component: {fileID: 1071742545}
   - component: {fileID: 1071742541}
   - component: {fileID: 1071742542}
+  - component: {fileID: 1071742546}
   - component: {fileID: 1071742540}
   m_Layer: 0
   m_Name: Npc
@@ -2090,6 +2110,34 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1071742546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071742537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  channel: 40
+  onEventRaised:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1071742540}
+        m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Npc.NpcManager, Assembly-CSharp
+        m_MethodName: OnConversationStart
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1084305067
 GameObject:
   m_ObjectHideFlags: 0
@@ -2305,6 +2353,8 @@ GameObject:
   - component: {fileID: 1255436669}
   - component: {fileID: 1255436676}
   - component: {fileID: 1255436670}
+  - component: {fileID: 1255436677}
+  - component: {fileID: 1255436678}
   - component: {fileID: 1255436674}
   m_Layer: 0
   m_Name: Player
@@ -2395,6 +2445,62 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1255436677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1255436668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  channel: 20
+  onEventRaised:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1255436674}
+        m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Player.PlayerManager, Assembly-CSharp
+        m_MethodName: OnInteractionInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1255436678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1255436668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  channel: 40
+  onEventRaised:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1255436674}
+        m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Player.PlayerManager, Assembly-CSharp
+        m_MethodName: OnConversationStart
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1385061737
 GameObject:
   m_ObjectHideFlags: 0
@@ -2603,6 +2709,7 @@ GameObject:
   - component: {fileID: 1427818185}
   - component: {fileID: 1427818187}
   - component: {fileID: 1427818186}
+  - component: {fileID: 1427818188}
   m_Layer: 0
   m_Name: CameraManager
   m_TagString: Untagged
@@ -2645,8 +2752,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 1255436669}
-  m_Follow: {fileID: 1255436669}
+  m_LookAt: {fileID: 0}
+  m_Follow: {fileID: 0}
   m_AnimatedTarget: {fileID: 1427818187}
   m_LayerIndex: 0
   m_ShowDebugText: 0
@@ -2658,7 +2765,7 @@ MonoBehaviour:
     m_VirtualCamera: {fileID: 953327575}
     m_ActivateAfter: 0
     m_MinDuration: 0
-  - m_FullHash: -388975409
+  - m_FullHash: 884755762
     m_VirtualCamera: {fileID: 1547940843}
     m_ActivateAfter: 0
     m_MinDuration: 0
@@ -2675,7 +2782,7 @@ MonoBehaviour:
   m_ParentHash:
   - m_Hash: -1019929913
     m_ParentHash: 756556552
-  - m_Hash: -388975409
+  - m_Hash: 884755762
     m_ParentHash: 756556552
 --- !u!95 &1427818187
 Animator:
@@ -2697,6 +2804,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &1427818188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427818184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  channel: 40
+  onEventRaised:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1427818187}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Conversation
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1542859260
 GameObject:
   m_ObjectHideFlags: 3
@@ -2721,7 +2856,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542859260}
-  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2786,7 +2921,7 @@ GameObject:
   - component: {fileID: 1547940842}
   - component: {fileID: 1547940843}
   m_Layer: 0
-  m_Name: DialogCam
+  m_Name: Conversation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2799,15 +2934,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1547940841}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3, y: 0, z: -11.5}
+  m_LocalRotation: {x: -0.05831726, y: 0.8700689, z: -0.10619739, w: -0.47780874}
+  m_LocalPosition: {x: 0.77604294, y: 2.132, z: 3.101688}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 839091266}
   m_Father: {fileID: 1427818185}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 13.918, y: 237.548, z: 0}
 --- !u!114 &1547940843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2829,7 +2964,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 80
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000

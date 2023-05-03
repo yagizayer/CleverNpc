@@ -17,6 +17,28 @@ namespace YagizAyer.Root.Scripts.Helpers
         public static List<T> Clone<T>(this IEnumerable<T> list) => new(list);
 
         /// <summary>
+        ///  Returns the closest item to the transform.
+        /// </summary>
+        /// <param name="transform"> The transform to compare the distance to.</param>
+        /// <param name="list"> The list to search for the closest item.</param>
+        /// <typeparam name="T"> The type of the list.</typeparam>
+        /// <returns> The closest item to the transform.</returns>
+        public static T GetClosest<T>(this Transform transform, List<T> list) where T : Component
+        {
+            T closest = null;
+            var closestDistance = Mathf.Infinity;
+            foreach (var item in list)
+            {
+                var distance = Vector3.Distance(transform.position, item.transform.position);
+                if (!(distance < closestDistance)) continue;
+                closest = item;
+                closestDistance = distance;
+            }
+
+            return closest;
+        }
+
+        /// <summary>
         /// Converts the value to IPassableData.
         /// </summary>
         /// <param name="value"></param>

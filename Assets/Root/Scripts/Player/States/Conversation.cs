@@ -1,6 +1,5 @@
 // Idle.cs
 
-using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
 

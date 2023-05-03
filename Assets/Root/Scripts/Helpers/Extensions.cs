@@ -1,7 +1,6 @@
 // Extensions.cs
 
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 
@@ -97,33 +96,16 @@ namespace YagizAyer.Root.Scripts.Helpers
             return finalMoveDir;
         }
 
-        public static Vector3 RelativeToCamera(this Vector3 me, Camera currentCamera)
-        {
-            return RelativeToCamera(me, currentCamera.transform);
-        }
-
         /// <summary>
-        ///     Returns given vector with projected values based on given vector normal
+        ///  Returns true if given key exists in the dictionary and casts the value to given type.
         /// </summary>
-        /// <param name="me">given vector</param>
-        /// <param name="planeNormal">plane normal</param>
-        /// <returns>Projected vector</returns>
-        public static Vector3 OnPlane(this Vector3 me, Vector3 planeNormal = default)
-        {
-            if (planeNormal == default)
-                planeNormal = Vector3.up;
-
-            planeNormal.Normalize();
-            return Vector3.ProjectOnPlane(me, planeNormal);
-        }
-
-        /// <summary>
-        /// Converts given vector to quaternion
-        /// </summary>
-        /// <param name="me"> given vector</param>
-        /// <returns>converted quaternion</returns>
-        public static Quaternion ToQuaternion(this Vector3 me) => Quaternion.Euler(me);
-
+        /// <param name="dict"> Dictionary to search in.</param>
+        /// <param name="key"> Key to search for.</param>
+        /// <param name="value"> Value to cast to.</param>
+        /// <typeparam name="TKey"> Type of the key.</typeparam>
+        /// <typeparam name="TVal"> Type of the value.</typeparam>
+        /// <typeparam name="TTargetType"> Type of the target type.</typeparam>
+        /// <returns> True if key exists in the dictionary.</returns>
         public static bool TryGetValue<TKey, TVal, TTargetType>(this Dictionary<TKey, TVal> dict, TKey key,
             out TTargetType value) where TTargetType : TVal
         {

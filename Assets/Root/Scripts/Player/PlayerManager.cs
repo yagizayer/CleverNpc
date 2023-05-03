@@ -1,40 +1,36 @@
 // PlayerManager.cs
 
 using System;
-using System.Linq;
 using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
+using YagizAyer.Root.Scripts.Managers;
+using YagizAyer.Root.Scripts.Npc;
 
 namespace YagizAyer.Root.Scripts.Player
 {
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : StateManager<PlayerManager>
     {
-        [SerializeField]
-        private PlayerComponent[] controllers;
+        private void Start() => SetState<States.Idle>();
 
-        internal Camera MainCamera;
-
-        private void OnEnable()
-        {
-            controllers = GetComponentsInChildren<PlayerComponent>();
-            MainCamera = Camera.main;
-        }
-
-        public void OnCameraInput(IPassableData rawData)
-        {
-            if (!rawData.Validate(out PassableDataBase<Vector2> data)) return;
-            var controller =
-                controllers.FirstOrDefault(component => component is MovementController) as MovementController;
-            controller!.OnCameraInput(data.Value);
-        }
+        private void Update() => CurrentState.OnUpdateState(this);
 
         public void OnMovementInput(IPassableData rawData)
         {
-            if (!rawData.Validate(out PassableDataBase<Vector2> data)) return;
-            var controller =
-                controllers.FirstOrDefault(component => component is MovementController) as MovementController;
-            controller!.OnMovementInput(data.Value);
+            if (CurrentState is States.Move moveState) moveState.OnUpdateState(this, rawData);
+            else SetState<States.Move>(rawData);
+        }
+
+        public void OnNpcEnterRange(Collider other)
+        {
+            if (!other.TryGetComponent(out NpcManager npc)) return;
+            npc.SetState<Npc.States.Move>(transform.ToPassableData());
+        }
+
+        public void OnNpcExitRange(Collider other)
+        {
+            if (!other.TryGetComponent(out NpcManager npc)) return;
+            npc.SetState<Npc.States.Idle>(transform.ToPassableData());
         }
     }
 }

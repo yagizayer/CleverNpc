@@ -33,19 +33,18 @@ namespace YagizAyer.Root.Scripts.OpenAIApiBase
 
         public string GetJson(string prompt)
         {
-            var result = new
+            var result = new OpenAIRequestData
             {
-                model = engine.ToEngineString(),
-                prompt = prompt,
-                temperature = temperature,
-                max_tokens = maxTokens,
-                top_p = topP,
-                frequency_penalty = frequencyPenalty,
-                presence_penalty = presencePenalty,
-                stop = stop
-            };
-            var parsed = JsonUtility.ToJson(result);
-            return parsed;
+                Model = engine.ToEngineString(),
+                Prompt = prompt,
+                Temperature = temperature,
+                MaxTokens = maxTokens,
+                TopP = topP,
+                FrequencyPenalty = frequencyPenalty,
+                PresencePenalty = presencePenalty,
+                Stop = stop
+            }.ToJson();
+            return result;
         }
     }
 }

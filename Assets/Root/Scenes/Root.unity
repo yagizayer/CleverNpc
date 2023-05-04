@@ -403,6 +403,8 @@ MonoBehaviour:
   excludedInterrupters:
   - {fileID: 292487790}
   - {fileID: 292487792}
+  client: {fileID: 11400000, guid: 491f1d22e12d23646b0cc15ce6c38242, type: 2}
+  requestSettings: {fileID: 11400000, guid: 7ce67cfa3d8dc184e943e08ae27fe127, type: 2}
 --- !u!1 &337870115
 GameObject:
   m_ObjectHideFlags: 0
@@ -3514,8 +3516,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd6b34a233464c289e92b534a235f5ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiClient: {fileID: 11400000, guid: 491f1d22e12d23646b0cc15ce6c38242, type: 2}
+  openAIApiClient: {fileID: 0}
   requestPreset: {fileID: 11400000, guid: 7ce67cfa3d8dc184e943e08ae27fe127, type: 2}
+  prompt: Say this is a test
 --- !u!1 &2056684337
 GameObject:
   m_ObjectHideFlags: 3
@@ -3540,7 +3543,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056684337}
-  m_LocalRotation: {x: 0.1948957, y: -0.0000000034291936, z: 6.8140127e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.19489568, y: 0.000000029431293, z: -0.0000000058481766, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -13,9 +13,11 @@ namespace YagizAyer.Root.Scripts.Npc.States
         private NavMeshAgent _agent;
         private Transform _moveTarget;
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
-            _agent ??= MyOwner.GetComponent<NavMeshAgent>();
+            if (_agent is null)
+                _agent = MyOwner.GetComponent<NavMeshAgent>();
             if (rawData.Validate(out PassableDataBase<Vector3> v3Data)) _agent.SetDestination(v3Data.Value);
             if (rawData.Validate(out PassableDataBase<Transform> trData)) StartCoroutine(MoveToTarget_CO(trData.Value));
         }

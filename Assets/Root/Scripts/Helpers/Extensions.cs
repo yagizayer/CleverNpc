@@ -97,12 +97,12 @@ namespace YagizAyer.Root.Scripts.Helpers
         /// <param name="data">Validated data</param>
         /// <typeparam name="T">Type of data</typeparam>
         /// <returns>True if data is valid</returns>
-        public static bool Validate<T>(this IPassableData rawData, out PassableDataBase<T> data)
+        public static bool Validate<T>(this IPassableData rawData, out T data) where T :class
         {
-            data = rawData as PassableDataBase<T>;
+            data = rawData as T;
             return data != null;
         }
-        
+
         /// <summary>
         /// Converts the string to json format.
         /// </summary>
@@ -170,11 +170,11 @@ namespace YagizAyer.Root.Scripts.Helpers
         }
 
         /// <summary>
-        ///  Encodes the object as json.
+        ///  Returns true if the value is between the range.
         /// </summary>
-        /// <param name="obj"> The object to encode.</param>
-        /// <typeparam name="T"> The type of the object.</typeparam>
-        /// <returns> The encoded object as json.</returns>
-        public static byte[] EncodeAsJson<T>(this T obj) => System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(obj));
+        /// <param name="value"> The value to check.</param>
+        /// <param name="range"> The range to check.</param>
+        /// <returns> True if the value is between the range.</returns>
+        public static bool IsBetween(this float value, Vector2 range) => value >= range.x && value <= range.y;
     }
 }

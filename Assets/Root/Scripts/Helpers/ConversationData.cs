@@ -10,5 +10,6 @@ namespace YagizAyer.Root.Scripts.Helpers
     {
         public NpcManager NpcManager { get; set; }
         public PlayerManager PlayerManager { get; set; }
+        public string Prompt { get; set; }
     }
 }

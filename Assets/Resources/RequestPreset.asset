@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43cc6d0ba2cb47e68bc643077c4a445f, type: 3}
   m_Name: RequestPreset
   m_EditorClassIdentifier: 
-  maxTokens: 15
+  engine: 6
+  maxTokens: 50
   temperature: 0.2
   topP: 1
   frequencyPenalty: 0.33

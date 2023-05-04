@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
+using YagizAyer.Root.Scripts.Helpers;
 using YagizAyer.Root.Scripts.Managers;
 using YagizAyer.Root.Scripts.Npc.States;
 
@@ -22,11 +23,20 @@ namespace YagizAyer.Root.Scripts.Npc
             _instance = this;
         }
 #endif
+
+        internal Vector2 BehaviouralOrientation;
+
         private void Start() => SetState<Idle>();
 
         private void Update() => CurrentState.OnUpdateState(this);
 
         public void OnConversationStart(IPassableData rawData) => SetState<Conversation>(rawData);
+
+        public void OnConversationResponse(IPassableData rawData)
+        {
+            // if (!rawData.Validate(out ConversationResponseData data)) return;
+            // ToDo : Implement
+        }
 
 #if UNITY_EDITOR
 

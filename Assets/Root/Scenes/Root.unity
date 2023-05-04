@@ -1377,7 +1377,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879011554}
-  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
+  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1965,7 +1965,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037173684}
-  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291947, z: -6.8140116e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
   m_LocalPosition: {x: 3, y: 6.05, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2388,6 +2388,7 @@ GameObject:
   - component: {fileID: 1255436670}
   - component: {fileID: 1255436677}
   - component: {fileID: 1255436678}
+  - component: {fileID: 1255436679}
   - component: {fileID: 1255436674}
   m_Layer: 0
   m_Name: Player
@@ -2525,6 +2526,34 @@ MonoBehaviour:
       - m_Target: {fileID: 1255436674}
         m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Player.PlayerManager, Assembly-CSharp
         m_MethodName: OnConversationStart
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1255436679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1255436668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  channel: 50
+  onEventRaised:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1255436674}
+        m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Player.PlayerManager, Assembly-CSharp
+        m_MethodName: OnConversationPrompt
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3543,7 +3572,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056684337}
-  m_LocalRotation: {x: 0.19489568, y: 0.000000029431293, z: -0.0000000058481766, w: 0.980824}
+  m_LocalRotation: {x: 0.1948957, y: -0.0000000034291936, z: 6.8140127e-10, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

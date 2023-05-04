@@ -31,6 +31,11 @@ namespace YagizAyer.Root.Scripts.Npc.States
             // do nothing
         }
 
+        internal void OnConversationResponse(ConversationResponseData conversationResponseData) =>
+            DecideResponseBehaviour(
+                new Vector2(conversationResponseData.positivity, conversationResponseData.friendliness)
+            );
+
         private void DecideResponseBehaviour(Vector2 orientation)
         {
             bool positive;

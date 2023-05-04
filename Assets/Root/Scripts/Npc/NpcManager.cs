@@ -34,8 +34,9 @@ namespace YagizAyer.Root.Scripts.Npc
 
         public void OnConversationResponse(IPassableData rawData)
         {
-            // if (!rawData.Validate(out ConversationResponseData data)) return;
-            // ToDo : Implement
+            if(CurrentState is not Conversation conversationState) return;
+            if (!rawData.Validate(out ConversationResponseData data)) return;
+            conversationState.OnConversationResponse(data);
         }
 
 #if UNITY_EDITOR

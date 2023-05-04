@@ -404,7 +404,7 @@ MonoBehaviour:
   - {fileID: 292487790}
   - {fileID: 292487792}
   client: {fileID: 11400000, guid: 491f1d22e12d23646b0cc15ce6c38242, type: 2}
-  requestSettings: {fileID: 11400000, guid: 7ce67cfa3d8dc184e943e08ae27fe127, type: 2}
+  textCompletionRequestSettings: {fileID: 11400000, guid: 7ce67cfa3d8dc184e943e08ae27fe127, type: 2}
 --- !u!1 &337870115
 GameObject:
   m_ObjectHideFlags: 0
@@ -1377,7 +1377,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879011554}
-  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1965,7 +1965,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037173684}
-  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291947, z: -6.8140116e-10, w: 0.980824}
   m_LocalPosition: {x: 3, y: 6.05, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3586,7 +3586,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056684337}
-  m_LocalRotation: {x: 0.19489568, y: 0.000000029431293, z: -0.0000000058481766, w: 0.980824}
+  m_LocalRotation: {x: 0.1948957, y: -0.0000000034291936, z: 6.8140127e-10, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

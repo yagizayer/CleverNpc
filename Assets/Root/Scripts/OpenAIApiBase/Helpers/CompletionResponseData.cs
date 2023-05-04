@@ -3,9 +3,31 @@
 using System;
 using UnityEngine;
 
-namespace YagizAyer.Root.Scripts.OpenAIApiBase
+namespace YagizAyer.Root.Scripts.OpenAIApiBase.Helpers
 {
-    public class OpenAIResponseData
+    
+    /*
+        {
+            "id": "cmpl-7CP8vzBiROvM9QohXacZDb3DBTIEt",
+            "object": "text_completion",
+            "created": 1683190941,
+            "model": "text-davinci-003",
+            "choices": [
+                {
+                    "text": "This is indeed a test.",
+                    "index": 0,
+                    "logprobs": null,
+                    "finish_reason": "stop"
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 244,
+                "completion_tokens": 11,
+                "total_tokens": 255
+            }
+        }
+     */
+    public class CompletionResponseData
     {
         public string Id;
         public int Created;
@@ -27,7 +49,7 @@ namespace YagizAyer.Root.Scripts.OpenAIApiBase
             public int TotalTokens;
         }
 
-        public static OpenAIResponseData FromJson(string json)
+        public static CompletionResponseData FromJson(string json)
         {
             var rawData = JsonUtility.FromJson<OpenAIResponseRawData>(json);
             var choices = new Choice[rawData.choices.Length];
@@ -47,7 +69,7 @@ namespace YagizAyer.Root.Scripts.OpenAIApiBase
                 CompletionTokens = rawData.usage.completion_tokens,
                 TotalTokens = rawData.usage.total_tokens
             };
-            var result = new OpenAIResponseData
+            var result = new CompletionResponseData
             {
                 Id = rawData.id,
                 Created = rawData.created,
@@ -57,7 +79,6 @@ namespace YagizAyer.Root.Scripts.OpenAIApiBase
             };
             return result;
         }
-
         
         // for JSON serialization
         [Serializable]

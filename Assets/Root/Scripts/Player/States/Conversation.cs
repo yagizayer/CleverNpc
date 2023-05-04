@@ -5,6 +5,8 @@ using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
 using YagizAyer.Root.Scripts.OpenAIApiBase;
+using YagizAyer.Root.Scripts.OpenAIApiBase.Helpers;
+using YagizAyer.Root.Scripts.OpenAIApiBase.Presets;
 
 namespace YagizAyer.Root.Scripts.Player.States
 {
@@ -14,7 +16,7 @@ namespace YagizAyer.Root.Scripts.Player.States
         private OpenAIApiClient client;
 
         [SerializeField]
-        private RequestPreset requestSettings;
+        private CompletionPreset completionSettings;
 
         private string _instructionPrompt;
         private const string Prefix = "\n\n\"";
@@ -22,7 +24,7 @@ namespace YagizAyer.Root.Scripts.Player.States
 
         public override void OnEnterState(PlayerManager stateManager, IPassableData rawData = null)
         {
-            _instructionPrompt ??= Resources.Load<TextAsset>("InstructionPrompt").text;
+            _instructionPrompt ??= Resources.Load<TextAsset>("OpenAIApi/InstructionPrompt").text;
         }
 
         public override void OnUpdateState(PlayerManager stateManager, IPassableData rawData = null)
@@ -36,12 +38,12 @@ namespace YagizAyer.Root.Scripts.Player.States
         }
 
         internal void OnConversationPrompt(string prompt) =>
-            client.RequestAsync(_instructionPrompt + Prefix + prompt + Suffix, requestSettings, OnResponse);
+            OpenAIApiClient.RequestJsonAsync(_instructionPrompt + Prefix + prompt + Suffix, completionSettings, OnResponse);
 
         private void OnResponse(string response)
         {
             if (response == null) return;
-            var responseData = OpenAIResponseData.FromJson(response);
+            var responseData = CompletionResponseData.FromJson(response);
             var conversationResponseData = ConversationResponseData.FromJson(responseData.Choices[0].Text);
             Channels.ConversationResponse.Raise(conversationResponseData);
             Debug.Log($"Response: {conversationResponseData.positivity}, {conversationResponseData.friendliness}");

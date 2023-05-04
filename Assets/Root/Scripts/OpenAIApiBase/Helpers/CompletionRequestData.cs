@@ -3,9 +3,24 @@
 using System;
 using UnityEngine;
 
-namespace YagizAyer.Root.Scripts.OpenAIApiBase
+namespace YagizAyer.Root.Scripts.OpenAIApiBase.Helpers
 {
-    public class OpenAIRequestData
+    /*
+       {
+            "model": "text-davinci-003",
+            "prompt": "Say this is a test.",
+            "temperature": 0.2,
+            "max_tokens": 50,
+            "top_p": 1,
+            "frequency_penalty": 0.33,
+            "presence_penalty": 1,
+            "stop": [
+                "User:",
+                "\n"
+            ]
+        }
+     */
+    public class CompletionRequestData
     {
         public string Model;
         public string Prompt;
@@ -18,7 +33,7 @@ namespace YagizAyer.Root.Scripts.OpenAIApiBase
 
         public string ToJson()
         {
-            var rawData = new OpenAIRequestRawData
+            var rawData = new CompletionRequestRawData
             {
                 model = Model,
                 prompt = Prompt,
@@ -26,15 +41,15 @@ namespace YagizAyer.Root.Scripts.OpenAIApiBase
                 max_tokens = MaxTokens,
                 top_p = TopP,
                 frequency_penalty = FrequencyPenalty,
-                presence_penalty = PresencePenalty,
-                stop = Stop
+                presence_penalty = PresencePenalty
             };
-            return JsonUtility.ToJson(rawData);
+            if(Stop is { Length: > 0 }) rawData.stop = Stop;
+            return JsonUtility.ToJson(rawData).Replace(",\"stop\":[]","");
         }
 
         // for JSON serialization
         [Serializable]
-        private class OpenAIRequestRawData
+        private class CompletionRequestRawData
         {
             public string model;
             public string prompt;
@@ -43,7 +58,7 @@ namespace YagizAyer.Root.Scripts.OpenAIApiBase
             public float top_p;
             public float frequency_penalty;
             public float presence_penalty;
-            public string[] stop;
+            public string[] stop = null;
         }
     }
 }

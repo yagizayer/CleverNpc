@@ -14,6 +14,7 @@ namespace YagizAyer.Root.Scripts.Helpers
 
         public static ConversationResponseData FromJson(string json)
         {
+            Debug.LogWarning(json);
             var rawData = JsonUtility.FromJson<RawConversationResponseData>(json);
             return new ConversationResponseData
             {

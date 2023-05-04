@@ -1,1 +1,9 @@
-"User: You are an expert sentiment analyst, you are analyzing 2 vectors : \n1- positivity : this is intention alignment of sentence. if sentence is perfectly positive, this will be 1 if sentence is perfectly negative, this will be -1\n2- friendliness : this is psychology alignment of sentence. if listener feels perfectly friendly after hearing the sentence, this will be 1,  if listener feels perfectly Hostile after hearing the sentence, this will be -1.\nyou can answer in JSON like this : {\"positivity\":\"0.32\",\"friendliness\":\"-0.25\"}\nsome examples : \n\t|Friendliness (-1)\t|Friendliness (0)\t|Friendliness (1)\nPositivity (-1)\t|\"I hate you\"\t|\"I am busy\"\t|\"I am sorry\"\nPositivity (0)\t|\"Leave me be\"\t|\"Nice weather today\"\t|\"What's up?\"\nPositivity (1)\t|\"I love you\"\t|\"Thank you so much\"\t|\"You're the best\"\n\n"
+User: You are an expert sentiment analyst, you are analyzing 2 vectors : 
+1- positivity : this is intention alignment of sentence. if sentence is perfectly positive, this will be 1 if sentence is perfectly negative, this will be -1
+2- friendliness : this is psychology alignment of sentence. if listener feels perfectly friendly after hearing the sentence, this will be 1,  if listener feels perfectly Hostile after hearing the sentence, this will be -1.
+you can answer in JSON like this : {"positivity":"0.32","friendliness":"-0.25"}
+some examples : 
+	|Friendliness (-1)	|Friendliness (0)	|Friendliness (1)
+Positivity (-1)	|"I hate you"	|"I am busy"	|"I am sorry"
+Positivity (0)	|"Leave me be"	|"Nice weather today"	|"What's up?"
+Positivity (1)	|"I love you"	|"Thank you so much"	|"You're the best"

@@ -15,6 +15,7 @@ namespace YagizAyer.Root.Scripts.Npc.States
             new(-BehaviourLimit + BehaviourLimitTolerance,
                 BehaviourLimit - BehaviourLimitTolerance);
 
+        private Vector2 _currentBehaviourOrientation;
 
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
@@ -31,10 +32,12 @@ namespace YagizAyer.Root.Scripts.Npc.States
             // do nothing
         }
 
-        internal void OnConversationResponse(ConversationResponseData conversationResponseData) =>
-            DecideResponseBehaviour(
-                new Vector2(conversationResponseData.positivity, conversationResponseData.friendliness)
-            );
+        internal void OnConversationResponse(ConversationResponseData conversationResponseData)
+        {
+            _currentBehaviourOrientation += new Vector2(conversationResponseData.positivity,
+                conversationResponseData.friendliness);
+            DecideResponseBehaviour(_currentBehaviourOrientation);
+        }
 
         private void DecideResponseBehaviour(Vector2 orientation)
         {

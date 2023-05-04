@@ -2053,6 +2053,7 @@ GameObject:
   - component: {fileID: 1071742541}
   - component: {fileID: 1071742542}
   - component: {fileID: 1071742546}
+  - component: {fileID: 1071742547}
   - component: {fileID: 1071742540}
   m_Layer: 0
   m_Name: Npc
@@ -2162,6 +2163,34 @@ MonoBehaviour:
       - m_Target: {fileID: 1071742540}
         m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Npc.NpcManager, Assembly-CSharp
         m_MethodName: OnConversationStart
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1071742547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071742537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  channel: 60
+  onEventRaised:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1071742540}
+        m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Npc.NpcManager, Assembly-CSharp
+        m_MethodName: OnConversationResponse
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2457,6 +2486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugText: {fileID: 452801608}
+  testPlayerPrompt: 
 --- !u!195 &1255436676
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3484,7 +3514,6 @@ GameObject:
   - component: {fileID: 1979571938}
   - component: {fileID: 1979571937}
   - component: {fileID: 1979571939}
-  - component: {fileID: 1979571940}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3533,21 +3562,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptableObjects:
   - {fileID: 11400000, guid: a7f9e4b2892e86e4689177d344f18546, type: 2}
---- !u!114 &1979571940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1979571936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd6b34a233464c289e92b534a235f5ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  openAIApiClient: {fileID: 0}
-  requestPreset: {fileID: 11400000, guid: 7ce67cfa3d8dc184e943e08ae27fe127, type: 2}
-  prompt: Say this is a test
 --- !u!1 &2056684337
 GameObject:
   m_ObjectHideFlags: 3
@@ -3572,7 +3586,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056684337}
-  m_LocalRotation: {x: 0.1948957, y: -0.0000000034291936, z: 6.8140127e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.19489568, y: 0.000000029431293, z: -0.0000000058481766, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

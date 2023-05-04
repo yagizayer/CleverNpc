@@ -17,6 +17,8 @@ namespace YagizAyer.Root.Scripts.Player.States
         private RequestPreset requestSettings;
 
         private string _instructionPrompt;
+        private const string Prefix = "\n\n\"";
+        private const string Suffix = "\"\n\nAnswer:";
 
         public override void OnEnterState(PlayerManager stateManager, IPassableData rawData = null)
         {
@@ -34,7 +36,7 @@ namespace YagizAyer.Root.Scripts.Player.States
         }
 
         internal void OnConversationPrompt(string prompt) =>
-            client.RequestAsync(_instructionPrompt + prompt, requestSettings, OnResponse);
+            client.RequestAsync(_instructionPrompt + Prefix + prompt + Suffix, requestSettings, OnResponse);
 
         private void OnResponse(string response)
         {

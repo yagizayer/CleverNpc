@@ -1,4 +1,4 @@
-// OpenAIResponseData.cs
+// CompletionResponseData.cs
 
 using System;
 using UnityEngine;

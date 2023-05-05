@@ -1,4 +1,4 @@
-// OpenAIRequestData.cs
+// CompletionRequestData.cs
 
 using System;
 using UnityEngine;

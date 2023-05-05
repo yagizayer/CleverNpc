@@ -1,4 +1,4 @@
-// OpenAIRequestData.cs
+// ImageRequestData.cs
 
 using System;
 using UnityEngine;

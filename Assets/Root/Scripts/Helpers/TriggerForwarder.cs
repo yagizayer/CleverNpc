@@ -1,3 +1,5 @@
+// TriggerForwarder.cs
+
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;

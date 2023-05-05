@@ -1,4 +1,4 @@
-// OpenAIRequestData.cs
+// AudioRequestData.cs
 
 using System;
 using UnityEngine;

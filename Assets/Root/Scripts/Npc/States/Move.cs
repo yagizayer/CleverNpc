@@ -1,4 +1,4 @@
-// Idle.cs
+// Move.cs
 
 using System.Collections;
 using UnityEngine;

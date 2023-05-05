@@ -258,7 +258,7 @@ namespace YagizAyer.Root.Scripts.Helpers
                 return string.Empty;
             }
         }
-        
+
         /// <summary>
         ///  Trims the silence from the start and end of the AudioClip.
         /// </summary>
@@ -288,12 +288,15 @@ namespace YagizAyer.Root.Scripts.Helpers
             var lengthSeconds = Mathf.CeilToInt((float)lengthSamples / clip.frequency);
 
             // Create a new audio clip with the trimmed data
-            var trimmedClip = AudioClip.Create("Trimmed Audio Clip", lengthSamples, clip.channels, clip.frequency, false);
+            var trimmedClip =
+                AudioClip.Create("Trimmed Audio Clip", lengthSamples, clip.channels, clip.frequency, false);
             var trimmedData = new float[lengthSamples];
             Array.Copy(samples, startSample, trimmedData, 0, lengthSamples);
             trimmedClip.SetData(trimmedData, 0);
 
             return trimmedClip;
         }
+
+        public static Vector2 ToVector2(this InputScore data) => new(data.positivity, data.friendliness);
     }
 }

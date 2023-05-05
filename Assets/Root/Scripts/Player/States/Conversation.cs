@@ -1,7 +1,5 @@
-// Idle.cs
+// Conversation.cs
 
-using System;
-using System.Diagnostics;
 using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
@@ -13,8 +11,9 @@ using Debug = UnityEngine.Debug;
 
 namespace YagizAyer.Root.Scripts.Player.States
 {
-    public class Conversation : State<PlayerManager>
+    public class Conversation : Idle
     {
+
         [SerializeField]
         private OpenAIApiClient client;
 
@@ -27,41 +26,41 @@ namespace YagizAyer.Root.Scripts.Player.States
         [SerializeField]
         private ConversationStates state = ConversationStates.Null;
 
-        private string _instructionPrompt;
+        [SerializeField]
+        private TextAsset inputScoringPrompt;
+
+        [SerializeField]
+        private TextAsset answeringPrompt;
+
         private const string Prefix = "\n\n\"";
         private const string Suffix = "\"\n\nAnswer:";
         private AudioClip _recording;
+        private ConversationData _conversationData;
 
         public override void OnEnterState(PlayerManager stateManager, IPassableData rawData = null)
         {
-            _instructionPrompt ??= Resources.Load<TextAsset>("OpenAIApi/InstructionPrompt").text;
+            if (!rawData.Validate(out _conversationData)) return;
+            base.OnEnterState(stateManager, _conversationData.NpcManager.ToPassableData()); // for NpcInRange.cs
             state = ConversationStates.Idle;
         }
-
-        public override void OnUpdateState(PlayerManager stateManager, IPassableData rawData = null)
-        {
-            // do nothing
-        }
-
-        public override void OnExitState(PlayerManager stateManager, IPassableData rawData = null)
-        {
-            // state = ConversationStates.Null;
-        }
+        
+        #region Record
 
         internal void StartRecording()
         {
             if (state != ConversationStates.Idle) return;
-            state = ConversationStates.Recording;
+            state = ConversationStates.Record;
 
             _recording = Microphone.Start(null, false, 10, 44100);
             if (_recording == null) return;
+            Channels.Recording.Raise(null);
 
             Debug.Log("Recording started");
         }
 
         internal void StopRecording()
         {
-            if(state != ConversationStates.Recording) return;
+            if (state != ConversationStates.Record) return;
             Debug.Log("Recording stopped");
 
             if (Microphone.IsRecording(null)) Microphone.End(null);
@@ -69,42 +68,63 @@ namespace YagizAyer.Root.Scripts.Player.States
 
             var path = _recording.Trim().SaveAsWav();
 
-            void OnAudioAPIResponse(string json)
-            {
-                var audioRP = AudioResponseData.FromJson(json);
-                Channels.ConversationPrompt.Raise(audioRP.Text.ToPassableData());
-            }
 
-            state = ConversationStates.Processing;
-            OpenAIApiClient.RequestFormAsync(path, audioSettings, OnAudioAPIResponse);
+            Channels.NpcThinking.Raise(_conversationData.NpcManager.ToPassableData());
+            state = ConversationStates.Process;
+            RequestPlayerAudioTranscription(path);
             _recording = null;
         }
 
-        internal void OnConversationPrompt(string prompt)
+        #endregion
+
+        #region API requests/responses
+
+        private void RequestPlayerAudioTranscription(string path) =>
+            OpenAIApiClient.RequestFormAsync(path, audioSettings, OnTranscriptionComplete);
+
+        private void OnTranscriptionComplete(string json)
         {
-            if(state != ConversationStates.Processing) return;
-            OpenAIApiClient.RequestJsonAsync(_instructionPrompt + Prefix + prompt + Suffix, completionSettings,
-                OnAPIResponse);
+            var audioTranscription = AudioResponseData.FromJson(json).Text;
+            RequestTextScoring(audioTranscription);
         }
 
-        private void OnAPIResponse(string response)
+        private void RequestTextScoring(string prompt) =>
+            OpenAIApiClient.RequestJsonAsync(
+                inputScoringPrompt.text + Prefix + prompt + Suffix,
+                completionSettings, response => OnScoringComplete(prompt, response));
+
+        private void OnScoringComplete(string prompt, string response)
         {
-            if(state != ConversationStates.Processing) return;
+            if (state != ConversationStates.Process) return;
             if (response == null) return;
 
             state = ConversationStates.Idle;
             var responseData = CompletionResponseData.FromJson(response);
-            var conversationResponseData = ConversationResponseData.FromJson(responseData.Choices[0].Text);
-            Channels.ConversationResponse.Raise(conversationResponseData);
-            Debug.Log($"Response: {conversationResponseData.positivity}, {conversationResponseData.friendliness}");
+            var textScore = InputScore.FromJson(responseData.Choices[0].Text);
+
+            RequestNpcAnswer(prompt, textScore);
         }
+
+        private void RequestNpcAnswer(string prompt, InputScore textScore)
+        {
+            var answerPrompt = answeringPrompt.text;
+            var score = textScore.ToVector2();
+            answerPrompt += "\n[P:" + score.x + ", F:" + score.y + "]"; // ex : [P:0.5, F:-0.5]
+            answerPrompt += Prefix + prompt + Suffix;
+
+            OpenAIApiClient.RequestJsonAsync(answerPrompt, completionSettings, OnAnswerComplete);
+        }
+
+        private void OnAnswerComplete(string response) => Debug.Log(response);
+
+        #endregion
 
         private enum ConversationStates
         {
             Null = 0,
             Idle = 10,
-            Recording = 20,
-            Processing = 30,
+            Record = 20,
+            Process = 30,
         }
     }
 }

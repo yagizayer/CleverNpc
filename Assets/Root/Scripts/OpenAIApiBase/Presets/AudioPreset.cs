@@ -1,6 +1,6 @@
-using System.Collections.Generic;
+// AudioPreset.cs
+
 using UnityEngine;
-using YagizAyer.Root.Scripts.Helpers;
 using YagizAyer.Root.Scripts.OpenAIApiBase.Helpers;
 
 namespace YagizAyer.Root.Scripts.OpenAIApiBase.Presets

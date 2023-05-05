@@ -1,4 +1,4 @@
-// FriendlyChase.cs
+// GoHome.cs
 
 namespace YagizAyer.Root.Scripts.Npc.States
 {

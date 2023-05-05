@@ -1,4 +1,5 @@
-using System;
+// CompletionPreset.cs
+
 using UnityEngine;
 using YagizAyer.Root.Scripts.OpenAIApiBase.Helpers;
 

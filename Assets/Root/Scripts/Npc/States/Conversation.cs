@@ -1,4 +1,4 @@
-// Idle.cs
+// Conversation.cs
 
 using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
@@ -6,7 +6,7 @@ using YagizAyer.Root.Scripts.Helpers;
 
 namespace YagizAyer.Root.Scripts.Npc.States
 {
-    public class Conversation : State<NpcManager>
+    public class Conversation : PlayerInRange
     {
         private const float BehaviourLimit = 1f;
         private const float BehaviourLimitTolerance = .1f;
@@ -19,23 +19,14 @@ namespace YagizAyer.Root.Scripts.Npc.States
 
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
-            // do nothing
+            if (!rawData.Validate(out ConversationData data)) return;
+            base.OnEnterState(stateManager, data.PlayerManager.ToPassableData()); // for PlayerInRange.cs
         }
 
-        public override void OnUpdateState(NpcManager stateManager, IPassableData rawData = null)
+        internal void OnConversationResponse(InputScore inputScore)
         {
-            // do nothing
-        }
-
-        public override void OnExitState(NpcManager stateManager, IPassableData rawData = null)
-        {
-            // do nothing
-        }
-
-        internal void OnConversationResponse(ConversationResponseData conversationResponseData)
-        {
-            _currentBehaviourOrientation += new Vector2(conversationResponseData.positivity,
-                conversationResponseData.friendliness);
+            _currentBehaviourOrientation += new Vector2(inputScore.positivity,
+                inputScore.friendliness);
             DecideResponseBehaviour(_currentBehaviourOrientation);
         }
 

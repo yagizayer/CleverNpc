@@ -388,6 +388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   excludedInterrupters: []
+  rotationSpeed: 5
 --- !u!114 &292487792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,10 +404,13 @@ MonoBehaviour:
   excludedInterrupters:
   - {fileID: 292487790}
   - {fileID: 292487792}
+  rotationSpeed: 5
   client: {fileID: 11400000, guid: 491f1d22e12d23646b0cc15ce6c38242, type: 2}
   completionSettings: {fileID: 11400000, guid: 7ce67cfa3d8dc184e943e08ae27fe127, type: 2}
   audioSettings: {fileID: 11400000, guid: 43a70ec90ff0ad040b347bd511419462, type: 2}
   state: 0
+  inputScoringPrompt: {fileID: 4900000, guid: 06a7be26c688457fa93316ef01a82f7f, type: 3}
+  answeringPrompt: {fileID: 4900000, guid: ea02b3f236aa4bc1b6cb89f0342b5ff2, type: 3}
 --- !u!1 &337870115
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,6 +477,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   excludedInterrupters: []
+  interactionUI: {fileID: 1134033956}
+  rotationSpeed: 5
 --- !u!114 &337870120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,6 +492,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   excludedInterrupters: []
+  interactionUI: {fileID: 1134033956}
+  rotationSpeed: 5
 --- !u!114 &337870121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1379,7 +1387,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879011554}
-  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1967,7 +1975,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037173684}
-  m_LocalRotation: {x: 0.19489568, y: -0.000000029431295, z: 0.0000000058481766, w: 0.980824}
+  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
   m_LocalPosition: {x: 3, y: 6.05, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2054,8 +2062,8 @@ GameObject:
   - component: {fileID: 1071742545}
   - component: {fileID: 1071742541}
   - component: {fileID: 1071742542}
-  - component: {fileID: 1071742546}
   - component: {fileID: 1071742547}
+  - component: {fileID: 1071742546}
   - component: {fileID: 1071742540}
   m_Layer: 0
   m_Name: Npc
@@ -2158,13 +2166,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  channel: 40
+  channel: 60
   onEventRaised:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1071742540}
         m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Npc.NpcManager, Assembly-CSharp
-        m_MethodName: OnConversationStart
+        m_MethodName: OnNpcThinking
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2186,13 +2194,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  channel: 60
+  channel: 40
   onEventRaised:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1071742540}
         m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Npc.NpcManager, Assembly-CSharp
-        m_MethodName: OnConversationResponse
+        m_MethodName: OnConversating
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2418,8 +2426,6 @@ GameObject:
   - component: {fileID: 1255436676}
   - component: {fileID: 1255436670}
   - component: {fileID: 1255436677}
-  - component: {fileID: 1255436678}
-  - component: {fileID: 1255436679}
   - component: {fileID: 1255436680}
   - component: {fileID: 1255436674}
   m_Layer: 0
@@ -2530,62 +2536,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1255436674}
         m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Player.PlayerManager, Assembly-CSharp
         m_MethodName: OnInteractionInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1255436678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1255436668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  channel: 40
-  onEventRaised:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1255436674}
-        m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Player.PlayerManager, Assembly-CSharp
-        m_MethodName: OnConversationStart
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1255436679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1255436668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  channel: 50
-  onEventRaised:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1255436674}
-        m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Player.PlayerManager, Assembly-CSharp
-        m_MethodName: OnConversationPrompt
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

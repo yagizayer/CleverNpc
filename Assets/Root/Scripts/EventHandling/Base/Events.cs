@@ -6,9 +6,9 @@ namespace YagizAyer.Root.Scripts.EventHandling.Base
         Movement = 10,  // input
         Interact = 20,  // input
         Record = 30,    // input
-        ConversationStart = 40,
-        ConversationPrompt = 50,
-        ConversationResponse = 60,
-        ConversationEnd = 70,
+        Conversating = 40,
+        Recording = 50,
+        NpcThinking = 60,
+        NpcAnswering = 70,
     }
 }

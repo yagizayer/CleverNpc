@@ -1,6 +1,5 @@
 // InputController.cs
 
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using YagizAyer.Root.Scripts.EventHandling.Base;

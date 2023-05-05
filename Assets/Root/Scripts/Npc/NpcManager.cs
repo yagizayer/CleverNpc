@@ -6,59 +6,26 @@ using YagizAyer.Root.Scripts.Helpers;
 using YagizAyer.Root.Scripts.Managers;
 using YagizAyer.Root.Scripts.Npc.States;
 
-#if UNITY_EDITOR
-using UnityEditor.ShortcutManagement;
-#endif
-
 namespace YagizAyer.Root.Scripts.Npc
 {
     public class NpcManager : StateManager<NpcManager>
     {
-#if UNITY_EDITOR
-        private static NpcManager _instance;
-
-        public override void OnEnable()
-        {
-            base.OnEnable();
-            _instance = this;
-        }
-#endif
-
-        internal Vector2 BehaviouralOrientation;
-
         private void Start() => SetState<Idle>();
 
         private void Update() => CurrentState.OnUpdateState(this);
 
-        public void OnConversationStart(IPassableData rawData) => SetState<Conversation>(rawData);
-
-        public void OnConversationResponse(IPassableData rawData)
+        public void OnConversating(IPassableData rawData)
         {
-            if(CurrentState is not Conversation conversationState) return;
-            if (!rawData.Validate(out ConversationResponseData data)) return;
-            conversationState.OnConversationResponse(data);
+            if (!rawData.Validate(out ConversationData data)) return;
+            if (data.NpcManager != this) return;
+            SetState<Conversation>(rawData);
         }
 
-#if UNITY_EDITOR
-
-        // shortcuts for testing : 
-        // shift + 1 : friendly chase
-        // shift + 2 : hostile chase
-        // shift + 3 : return chase
-        // shift + 4 : go home
-
-        [Shortcut("Custom Shortcuts/Friendly Chase", KeyCode.Alpha1, ShortcutModifiers.Shift)]
-        private static void FriendlyChase() => _instance.SetState<FriendlyChase>();
-
-        [Shortcut("Custom Shortcuts/Hostile Chase", KeyCode.Alpha2, ShortcutModifiers.Shift)]
-        private static void HostileChase() => _instance.SetState<HostileChase>();
-
-        [Shortcut("Custom Shortcuts/Return Chase", KeyCode.Alpha3, ShortcutModifiers.Shift)]
-        private static void ReturnChase() => _instance.SetState<ReturnChase>();
-
-        [Shortcut("Custom Shortcuts/Go Home", KeyCode.Alpha4, ShortcutModifiers.Shift)]
-        private static void GoHome() => _instance.SetState<GoHome>();
-
-#endif
+        public void OnNpcThinking(IPassableData rawData)
+        {
+            if (!rawData.Validate(out PassableDataBase<NpcManager> data)) return;
+            if (data.Value != this) return;
+            // do nothing
+        }
     }
 }

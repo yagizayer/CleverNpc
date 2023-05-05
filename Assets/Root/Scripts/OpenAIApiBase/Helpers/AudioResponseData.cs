@@ -1,4 +1,4 @@
-// OpenAIResponseData.cs
+// AudioResponseData.cs
 
 using System;
 using UnityEngine;

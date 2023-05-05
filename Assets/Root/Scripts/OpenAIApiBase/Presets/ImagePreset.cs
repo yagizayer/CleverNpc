@@ -1,3 +1,5 @@
+// ImagePreset.cs
+
 using UnityEngine;
 using YagizAyer.Root.Scripts.OpenAIApiBase.Helpers;
 

@@ -1,4 +1,4 @@
-// OpenAIResponseData.cs
+// ImageResponseData.cs
 
 using System;
 using UnityEngine;

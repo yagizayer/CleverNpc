@@ -1,4 +1,4 @@
-// ConversationResponseData.cs
+// InputScore.cs
 
 using System;
 using UnityEngine;
@@ -7,15 +7,15 @@ using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 namespace YagizAyer.Root.Scripts.Helpers
 {
     [Serializable]
-    public class ConversationResponseData : IPassableData
+    public class InputScore : IPassableData
     {
         public float positivity;
         public float friendliness;
 
-        public static ConversationResponseData FromJson(string json)
+        public static InputScore FromJson(string json)
         {
             var rawData = JsonUtility.FromJson<RawConversationResponseData>(json);
-            return new ConversationResponseData
+            return new InputScore
             {
                 positivity = float.Parse(rawData.positivity.Replace('.', ',').Trim()),
                 friendliness = float.Parse(rawData.friendliness.Replace('.', ',').Trim())

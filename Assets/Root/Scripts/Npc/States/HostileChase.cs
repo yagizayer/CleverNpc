@@ -1,4 +1,4 @@
-// FriendlyChase.cs
+// HostileChase.cs
 
 namespace YagizAyer.Root.Scripts.Npc.States
 {

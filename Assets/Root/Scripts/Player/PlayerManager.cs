@@ -53,6 +53,12 @@ namespace YagizAyer.Root.Scripts.Player
             Channels.Conversating.Raise(conversationData);
             SetState<Conversation>(conversationData);
         }
+        public void OnNpcAnswering(IPassableData rawData)
+        {
+            if (InteractableNpcs.Count == 0) return;
+            if (CurrentState is not Conversation conversation) return;
+            conversation.OnNpcAnswering();
+        }
 
         #endregion
 

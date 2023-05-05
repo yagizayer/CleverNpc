@@ -6,6 +6,7 @@ namespace YagizAyer.Root.Scripts.Managers
 {
     public class GameManager : MonoBehaviour
     {
+        // serialized for initialization
         [SerializeField]
         private InputController inputController;
 

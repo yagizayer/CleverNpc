@@ -27,5 +27,10 @@ namespace YagizAyer.Root.Scripts.Npc
             if (data.Value != this) return;
             // do nothing
         }
+        public void OnNpcAnswering(IPassableData rawData)
+        {
+            if (!rawData.Validate(out PassableDataBase<string> data)) return;
+            Debug.Log(data.Value);
+        }
     }
 }

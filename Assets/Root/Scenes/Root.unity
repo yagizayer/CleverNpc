@@ -404,7 +404,9 @@ MonoBehaviour:
   - {fileID: 292487790}
   - {fileID: 292487792}
   client: {fileID: 11400000, guid: 491f1d22e12d23646b0cc15ce6c38242, type: 2}
-  textCompletionRequestSettings: {fileID: 11400000, guid: 7ce67cfa3d8dc184e943e08ae27fe127, type: 2}
+  completionSettings: {fileID: 11400000, guid: 7ce67cfa3d8dc184e943e08ae27fe127, type: 2}
+  audioSettings: {fileID: 11400000, guid: 43a70ec90ff0ad040b347bd511419462, type: 2}
+  state: 0
 --- !u!1 &337870115
 GameObject:
   m_ObjectHideFlags: 0
@@ -1377,7 +1379,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879011554}
-  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
+  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1965,7 +1967,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037173684}
-  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291947, z: -6.8140116e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.19489568, y: -0.000000029431295, z: 0.0000000058481766, w: 0.980824}
   m_LocalPosition: {x: 3, y: 6.05, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2418,6 +2420,7 @@ GameObject:
   - component: {fileID: 1255436677}
   - component: {fileID: 1255436678}
   - component: {fileID: 1255436679}
+  - component: {fileID: 1255436680}
   - component: {fileID: 1255436674}
   m_Layer: 0
   m_Name: Player
@@ -2486,7 +2489,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugText: {fileID: 452801608}
-  testPlayerPrompt: 
 --- !u!195 &1255436676
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2584,6 +2586,34 @@ MonoBehaviour:
       - m_Target: {fileID: 1255436674}
         m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Player.PlayerManager, Assembly-CSharp
         m_MethodName: OnConversationPrompt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1255436680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1255436668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e962e2d2da4756912c5ebd621b9f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  channel: 30
+  onEventRaised:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1255436674}
+        m_TargetAssemblyTypeName: YagizAyer.Root.Scripts.Player.PlayerManager, Assembly-CSharp
+        m_MethodName: OnRecordingInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2948,7 +2978,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542859260}
-  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3513,7 +3543,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1979571938}
   - component: {fileID: 1979571937}
-  - component: {fileID: 1979571939}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3533,6 +3562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5626be272a4b74a362773076346fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputController: {fileID: 11400000, guid: a7f9e4b2892e86e4689177d344f18546, type: 2}
 --- !u!4 &1979571938
 Transform:
   m_ObjectHideFlags: 0
@@ -3548,20 +3578,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1979571939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1979571936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 398cd2ca1e964ef481f317886c8ebf8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptableObjects:
-  - {fileID: 11400000, guid: a7f9e4b2892e86e4689177d344f18546, type: 2}
 --- !u!1 &2056684337
 GameObject:
   m_ObjectHideFlags: 3

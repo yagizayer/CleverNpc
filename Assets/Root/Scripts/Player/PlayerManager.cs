@@ -15,18 +15,6 @@ namespace YagizAyer.Root.Scripts.Player
     {
         public List<NpcManager> InteractableNpcs { get; } = new();
 
-        #region Testing area
-
-        [TextArea]
-        [SerializeField]
-        private string testPlayerPrompt;
-
-        [ContextMenu("Test Conversation Prompt")]
-        private void TestConversationPrompt() => Channels.ConversationPrompt.Raise(testPlayerPrompt.ToPassableData());
-
-        #endregion
-
-
         private void Start() => SetState<States.Idle>();
 
         private void Update() => CurrentState.OnUpdateState(this);
@@ -59,6 +47,15 @@ namespace YagizAyer.Root.Scripts.Player
         }
 
         public void OnConversationStart(IPassableData rawData) => SetState<States.Conversation>(rawData);
+
+        public void OnRecordingInput(IPassableData rawData)
+        {
+            if (CurrentState is not States.Conversation conversationState) return;
+            if (!rawData.Validate(out PassableDataBase<bool> data)) return;
+            
+            if (data.Value) conversationState.StartRecording();
+            else conversationState.StopRecording();
+        }
 
         public void OnConversationPrompt(IPassableData rawData)
         {

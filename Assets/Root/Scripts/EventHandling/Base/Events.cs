@@ -3,10 +3,9 @@ namespace YagizAyer.Root.Scripts.EventHandling.Base
     public enum Channels
     {
         Null = 0,
-        GameplayMovement = 10,
-        GameplayInteract = 20,
-        GameplayCamera = 25,
-        MenuNext = 30,
+        Movement = 10,  // input
+        Interact = 20,  // input
+        Record = 30,    // input
         ConversationStart = 40,
         ConversationPrompt = 50,
         ConversationResponse = 60,

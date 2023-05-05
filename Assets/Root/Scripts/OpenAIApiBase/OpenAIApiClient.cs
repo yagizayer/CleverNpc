@@ -32,19 +32,15 @@ namespace YagizAyer.Root.Scripts.OpenAIApiBase
             var json = request.downloadHandler.text.ToJson();
             onComplete(json);
         }
-
-        public static async void RequestFormAsync(RequestPreset preset, Action<string> onComplete)
+        
+        public static async void RequestFormAsync(string clipPath, RequestPreset preset, Action<string> onComplete)
         {
-            if (preset.GetType().GetInterface(nameof(IWWWFormDataWrapper)) == null)
-                throw new Exception("Preset must implement IWWWFormDataWrapper interface");
-
-            var formDataWrapper = (IWWWFormDataWrapper)preset;
             var formData = new WWWForm();
 
-            foreach (var kvPair in formDataWrapper.Fields) formData.AddField(kvPair.Key, kvPair.Value);
-            foreach (var kvPair in formDataWrapper.FilePaths)
-                formData.AddBinaryData(kvPair.Key, File.ReadAllBytes(kvPair.Value.filePath), kvPair.Value.fieldName,
-                    kvPair.Value.mimeType);
+            formData.AddField("model", "whisper-1"); // currently only whisper-1 is supported
+            
+            var clip = File.ReadAllBytes(clipPath);
+            formData.AddBinaryData("file", clip, "audio.wav", "audio/wav");
 
             var request = UnityWebRequest.Post(preset.TargetURL, formData);
             request.SetRequestHeader("Authorization", Auth);
@@ -84,15 +80,7 @@ namespace YagizAyer.Root.Scripts.OpenAIApiBase
             var preset = CreateInstance<AudioPreset>();
             Action<string> onComplete = Debug.Log;
 
-            preset.Fields.Add("model", "whisper-1");
-            preset.FilePaths.Add("file", new WWWFormData
-            {
-                fieldName = "TestSound.m4a",
-                filePath = Application.dataPath + "/Resources/Test/TestSound.m4a",
-                mimeType = "audio/m4a"
-            });
-
-            RequestFormAsync(preset, onComplete);
+            RequestFormAsync("Assets/Resources/Test/TestSound.wav", preset, onComplete);
         }
 #endif
     }

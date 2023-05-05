@@ -9,7 +9,7 @@ using YagizAyer.Root.Scripts.Helpers;
 namespace YagizAyer.Root.Scripts.Managers
 {
     [CreateAssetMenu(fileName = "InputController", menuName = "Controllers/InputController", order = 0)]
-    public class InputController : ScriptableObject, InputActions.IGameplayActions, InputActions.IMenuActions
+    public class InputController : ScriptableObject, InputActions.IGameplayActions
     {
         private InputActions _inputActions;
 
@@ -17,7 +17,6 @@ namespace YagizAyer.Root.Scripts.Managers
         {
             _inputActions = new InputActions();
             _inputActions.Gameplay.SetCallbacks(this);
-            _inputActions.Menu.SetCallbacks(this);
 
             _inputActions.Enable();
         }
@@ -25,15 +24,16 @@ namespace YagizAyer.Root.Scripts.Managers
         private void OnDisable() => _inputActions.Disable();
 
         public void OnMovement(InputAction.CallbackContext context) =>
-            Channels.GameplayMovement.Raise(context.ReadValue<Vector2>().ToPassableData());
+            Channels.Movement.Raise(context.ReadValue<Vector2>().ToPassableData());
 
         public void OnInteract(InputAction.CallbackContext context) =>
-            Channels.GameplayInteract.Raise(context.started.ToPassableData());
+            Channels.Interact.Raise(context.started.ToPassableData());
 
-        public void OnCamera(InputAction.CallbackContext context) =>
-            Channels.GameplayCamera.Raise(context.ReadValue<Vector2>().ToPassableData());
-
-        public void OnNext(InputAction.CallbackContext context) =>
-            Channels.MenuNext.Raise(context.started.ToPassableData());
+        public void OnRecord(InputAction.CallbackContext context)
+        {
+            // held down = true, released = false
+            if (context.started) return;
+            Channels.Record.Raise(context.performed.ToPassableData());
+        }
     }
 }

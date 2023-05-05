@@ -24,10 +24,10 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Camera",
-                    "type": "PassThrough",
+                    "name": "Record",
+                    "type": "Button",
                     "id": "98162896-cabf-4c9a-a9c4-b2583a3c17ef",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -102,51 +102,12 @@
                 },
                 {
                     "name": "",
-                    "id": "98d864b3-ea30-4481-bcb5-38069723ab4a",
-                    "path": "<Mouse>/delta",
+                    "id": "23b15289-ea7a-499c-84d8-01a287768077",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Camera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Menu",
-            "id": "2d67f731-1831-4110-9501-3d193d73d572",
-            "actions": [
-                {
-                    "name": "Next",
-                    "type": "Button",
-                    "id": "d8500af8-4b03-499f-b5eb-581bb008e784",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "ddf366ce-9fe7-430b-86c2-10ac57976d19",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Next",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8265b0df-f60f-43ed-a3dc-e7ae41068e69",
-                    "path": "<Keyboard>/numpadEnter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Next",
+                    "action": "Record",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

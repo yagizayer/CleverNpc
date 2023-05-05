@@ -6,13 +6,10 @@ using YagizAyer.Root.Scripts.OpenAIApiBase.Helpers;
 namespace YagizAyer.Root.Scripts.OpenAIApiBase.Presets
 {
     [CreateAssetMenu(fileName = "AudioPreset", menuName = "RequestPresets/AudioRP")]
-    public class AudioPreset : RequestPreset, IWWWFormDataWrapper
+    public class AudioPreset : RequestPreset
     {
         [field: SerializeField]
         public override string TargetURL { get; set; } = "https://api.openai.com/v1/audio/transcriptions";
-
-        [field: SerializeField] public SerializableDictionary<string, string> Fields { get; set; } = new();
-        [field: SerializeField] public SerializableDictionary<string, WWWFormData> FilePaths { get; set; } = new();
 
         [field: SerializeField] public override ContentType BodyContent { get; set; } = ContentType.MultipartFormData;
 

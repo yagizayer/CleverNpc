@@ -2,10 +2,13 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityWebRequestAwaiter;
 using YagizAyer.Root.Scripts.ElevenLabsApiBase.Helpers;
+using YagizAyer.Root.Scripts.Managers;
 
 namespace YagizAyer.Root.Scripts.ElevenLabsApiBase
 {
@@ -50,7 +53,18 @@ namespace YagizAyer.Root.Scripts.ElevenLabsApiBase
             }
 
             var responseBytes = request.downloadHandler.data;
-            await using var fileStream = new FileStream("Assets/Resources/Audio/NpcAnswer.mp3", FileMode.Create);
+            var filePath = $"Assets/Root/Audios/NpcAnswer.mp3";
+
+            await SaveAudioToFile(filePath, responseBytes);
+
+            AssetDatabase.ImportAsset(filePath, ImportAssetOptions.ForceUpdate);
+            var audioClip = AssetDatabase.LoadAssetAtPath<AudioClip>(filePath);
+            onComplete(audioClip);
+        }
+
+        private static async Task SaveAudioToFile(string filePath, byte[] responseBytes)
+        {
+            await using var fileStream = new FileStream(filePath, FileMode.Create);
 
             var offset = 0;
             while (offset < responseBytes.Length)
@@ -60,9 +74,6 @@ namespace YagizAyer.Root.Scripts.ElevenLabsApiBase
 
                 offset += chunkSize;
             }
-
-            var audioClip = Resources.Load<AudioClip>("Audio/NpcAnswer");
-            onComplete(audioClip);
         }
 
         private class RequestBody

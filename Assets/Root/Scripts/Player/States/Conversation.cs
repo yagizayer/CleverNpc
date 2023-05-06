@@ -43,7 +43,7 @@ namespace YagizAyer.Root.Scripts.Player.States
             if (Microphone.IsRecording(null)) Microphone.End(null);
             else Debug.LogError("Microphone is not recording");
 
-            var path = _recording.Trim().SaveAsWav();
+            var path = _recording.Trim().SaveAsWav("Assets/Root/Audios/PlayerInput.wav");
 
             Channels.NpcThinking.Raise(_conversationData.NpcManager.ToPassableData());
             state = ConversationStates.Process;

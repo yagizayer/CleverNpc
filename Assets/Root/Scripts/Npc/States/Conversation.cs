@@ -23,13 +23,6 @@ namespace YagizAyer.Root.Scripts.Npc.States
             base.OnEnterState(stateManager, data.PlayerManager.ToPassableData()); // for PlayerInRange.cs
         }
 
-        internal void OnConversationResponse(InputScore inputScore)
-        {
-            _currentBehaviourOrientation += new Vector2(inputScore.positivity,
-                inputScore.friendliness);
-            DecideResponseBehaviour(_currentBehaviourOrientation);
-        }
-
         private void DecideResponseBehaviour(Vector2 orientation)
         {
             bool positive;

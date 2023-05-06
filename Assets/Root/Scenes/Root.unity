@@ -3594,8 +3594,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   completionSettings: {fileID: 11400000, guid: 7ce67cfa3d8dc184e943e08ae27fe127, type: 2}
   audioSettings: {fileID: 11400000, guid: 43a70ec90ff0ad040b347bd511419462, type: 2}
-  inputScoringPrompt: {fileID: 4900000, guid: 06a7be26c688457fa93316ef01a82f7f, type: 3}
-  answeringPrompt: {fileID: 4900000, guid: ea02b3f236aa4bc1b6cb89f0342b5ff2, type: 3}
+  chatInstructions: {fileID: 4900000, guid: ea02b3f236aa4bc1b6cb89f0342b5ff2, type: 3}
+  chatHistory: {fileID: 4900000, guid: d4b4fb5f226b4739b4cc998df03a666a, type: 3}
 --- !u!1 &2056684337
 GameObject:
   m_ObjectHideFlags: 3

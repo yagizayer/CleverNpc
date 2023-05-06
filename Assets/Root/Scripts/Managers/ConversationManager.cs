@@ -1,5 +1,6 @@
 // ConversationManager.cs
 
+using System.IO;
 using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.Helpers;
@@ -18,10 +19,10 @@ namespace YagizAyer.Root.Scripts.Managers
         private AudioPreset audioSettings;
 
         [SerializeField]
-        private TextAsset inputScoringPrompt;
+        private TextAsset chatInstructions;
 
         [SerializeField]
-        private TextAsset answeringPrompt;
+        private TextAsset chatHistory;
 
         // player audio file -> transcription
         internal static void RequestPlayerAudioTranscription(string path) =>
@@ -29,33 +30,29 @@ namespace YagizAyer.Root.Scripts.Managers
                 onComplete: json =>
                 {
                     var audioTranscription = AudioResponseData.FromJson(json).Text;
+                    Debug.Log("prompt : " + audioTranscription);
                     Instance.RequestTextScoring(audioTranscription);
                 });
 
-        // transcription -> Text Score
+        // transcription -> Npc Answer
         private void RequestTextScoring(string prompt) =>
-            OpenAIApiClient.RequestJsonAsync(inputScoringPrompt.text + "\n\n\"" + prompt + "\"\n\nAnswer:",
+            OpenAIApiClient.RequestJsonAsync(chatInstructions.text + chatHistory.text + prompt,
                 completionSettings,
                 onComplete: response =>
                 {
                     if (response == null) return;
 
-                    var responseData = CompletionResponseData.FromJson(response);
-                    var textScore = InputScore.FromJson(responseData.Choices[0].Text);
+                    var responseData = CompletionResponseData.FromJson(response).Choices[0].Text.Split('|');
+                    var score = responseData[0].Trim();
+                    var answer = responseData[1].Trim();
 
-                    RequestNpcAnswer(prompt, textScore);
+                    // save prompt and answer to chat history
+                    var chatHistoryFile = new StreamWriter(@"Assets/Resources/OpenAIApi/ChatHistory.txt", true);
+                    chatHistoryFile.WriteLine(prompt);
+                    chatHistoryFile.WriteLine("\nNpc: " + answer + "\nPlayer: ");
+                    chatHistoryFile.Close();
+
+                    Channels.NpcAnswering.Raise((score + "/" + answer).ToPassableData());
                 });
-
-        // Text Score + Prompt -> Npc Answer
-        private void RequestNpcAnswer(string prompt, InputScore textScore)
-        {
-            var answerPrompt = answeringPrompt.text;
-            var score = textScore.ToVector2();
-            answerPrompt += "\n[P:" + score.x + ", F:" + score.y + "]"; // ex : [P:0.5, F:-0.5]
-            answerPrompt += "\n\n\"" + prompt + "\"\n\nAnswer:";
-
-            OpenAIApiClient.RequestJsonAsync(answerPrompt, completionSettings,
-                onComplete: response => Channels.NpcAnswering.Raise(response.ToPassableData()));
-        }
     }
 }

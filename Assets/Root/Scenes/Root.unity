@@ -2304,15 +2304,9 @@ MonoBehaviour:
   debugText: {fileID: 780453169}
   <AnsweringInstructions>k__BackingField: "The following is a conversation with an
     Npc on a Rpg game and player comes to ask you something. \r\nNpc have to answer
-    in single sentence. \r\nNpc will declare what they are doing at the start of
-    the answer like this:\r\n\"Talk | I am happy to help!\".\r\nAvaliable actions
+    in single sentence. \r\nNpc will declare what they are doing.\nAvaliable actions
     are \"Talk\", \"Follow\", \"Attack\"\r."
-  chatHistory: 'Player: Hi I want some help please.
-
-    Npc: Talk | I am happy
-    to help!
-
-    Player: I need you to follow me!
+  chatHistory: 'Player: I need you to follow me!
 
     Npc: Follow | Sure, I will
     follow you!
@@ -4320,7 +4314,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056684337}
-  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
+  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -11,7 +11,7 @@ namespace YagizAyer.Root.Scripts.Npc.States
     {
         [SerializeField]
         private ParticleSystem chaseEffect;
-        
+
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
             if (!rawData.Validate(out NpcAnswerData data)) return;
@@ -19,5 +19,8 @@ namespace YagizAyer.Root.Scripts.Npc.States
             Channels.CancelConversating.Raise(data.ConversationData);
             base.OnEnterState(stateManager, data.ConversationData.PlayerManager.transform.ToPassableData());
         }
+
+        protected override void OnReachTarget(Transform target) =>
+            MyOwner.PlayAnimation(Animations.Attack.ToAnimationHash());
     }
 }

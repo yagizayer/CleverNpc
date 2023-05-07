@@ -50,10 +50,8 @@ namespace YagizAyer.Root.Scripts.Managers
         {
             _retryCount++;
             var npc = _conversationData.NpcManager;
-            var answeringPrompt = npc.AnsweringInstructions +
-                                  npc.chatHistory +
-                                  "\nPlayer: " + prompt + "\nNpc: ";
-
+            npc.chatHistory += "\nPlayer: " + prompt + "\nNpc: ";
+            var answeringPrompt = npc.AnsweringInstructions + npc.chatHistory;
             OpenAIApiClient.RequestJsonAsync(answeringPrompt, completionSettings, onComplete: response =>
             {
                 var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;

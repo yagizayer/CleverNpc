@@ -196,7 +196,6 @@ MonoBehaviour:
   excludedInterrupters:
   - {fileID: 9107959073967125399}
   - {fileID: 9107959073967125397}
-  moveTarget: {fileID: 0}
   chaseEffect: {fileID: 8982394370412125443}
 --- !u!114 &9107959073967125403
 MonoBehaviour:
@@ -213,7 +212,6 @@ MonoBehaviour:
   excludedInterrupters:
   - {fileID: 9107959073967125399}
   - {fileID: 9107959073967125397}
-  moveTarget: {fileID: 0}
   chaseEffect: {fileID: 8982394369696708789}
 --- !u!1 &9107959073974840945
 GameObject:
@@ -998,6 +996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugText: {fileID: 9107959074397129603}
+  myAnimator: {fileID: 4877031262651014021}
   <AnsweringInstructions>k__BackingField: "The following is a conversation with an
     Npc on a Rpg game and player comes to ask you something. \r\nNpc have to answer
     in single sentence. \r\nNpc will declare what they are doing.\nAvaliable actions

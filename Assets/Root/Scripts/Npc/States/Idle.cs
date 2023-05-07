@@ -9,7 +9,7 @@ namespace YagizAyer.Root.Scripts.Npc.States
     {
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
-            // do nothing
+            MyOwner.PlayAnimation(Animations.Idle.ToAnimationHash());
         }
 
         public override void OnUpdateState(NpcManager stateManager, IPassableData rawData = null)

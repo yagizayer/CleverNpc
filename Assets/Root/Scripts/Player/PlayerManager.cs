@@ -13,11 +13,14 @@ namespace YagizAyer.Root.Scripts.Player
 {
     public class PlayerManager : StateManager<PlayerManager>
     {
+        [SerializeField]
+        private Animator myAnimator;
+
         public List<NpcManager> InteractableNpcs { get; } = new();
 
         #region UnityEvents
 
-        private void Start() => SetState<States.Idle>();
+        private void Start() => SetState<Idle>();
 
         private void Update() => CurrentState.OnUpdateState(this);
 
@@ -58,8 +61,8 @@ namespace YagizAyer.Root.Scripts.Player
             Channels.Conversating.Raise(conversationData);
             SetState<Conversation>(conversationData);
         }
-        
-        public void OnCancelConversation(IPassableData _) => SetState<Idle>(); 
+
+        public void OnCancelConversation(IPassableData _) => SetState<Idle>();
 
         #endregion
 
@@ -80,5 +83,7 @@ namespace YagizAyer.Root.Scripts.Player
         }
 
         #endregion
+
+        internal void PlayAnimation(int animationHash) => myAnimator.Play(animationHash);
     }
 }

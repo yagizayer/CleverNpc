@@ -443,6 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugText: {fileID: 7686278444174820292}
+  myAnimator: {fileID: 2494362086633469528}
 --- !u!1 &7686278443195787326
 GameObject:
   m_ObjectHideFlags: 0

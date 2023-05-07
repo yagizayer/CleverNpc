@@ -22,8 +22,12 @@ namespace YagizAyer.Root.Scripts.Managers
 
         private void OnDisable() => _inputActions.Disable();
 
-        public void OnMovement(InputAction.CallbackContext context) =>
+        public void OnMovement(InputAction.CallbackContext context)
+        {
+            // held down = true, released = false
+            if (context.started) return;
             Channels.Movement.Raise(context.ReadValue<Vector2>().ToPassableData());
+        }
 
         public void OnInteract(InputAction.CallbackContext context)
         {

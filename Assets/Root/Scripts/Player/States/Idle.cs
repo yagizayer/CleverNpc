@@ -17,6 +17,7 @@ namespace YagizAyer.Root.Scripts.Player.States
 
         public override void OnEnterState(PlayerManager stateManager, IPassableData rawData = null)
         {
+            MyOwner.PlayAnimation(Animations.Idle.ToAnimationHash());
             if (rawData.Validate(out PassableDataBase<NpcManager> data))
                 _lookTarget = data.Value.transform;
         }

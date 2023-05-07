@@ -11,6 +11,9 @@ namespace YagizAyer.Root.Scripts.Npc
 {
     public class NpcManager : StateManager<NpcManager>
     {
+        [SerializeField]
+        private Animator myAnimator;
+        
         [field: SerializeField]
         [field: TextArea(10, 10)]
         public string AnsweringInstructions { get; private set; }
@@ -19,9 +22,15 @@ namespace YagizAyer.Root.Scripts.Npc
         [TextArea(20, 10)]
         public string chatHistory;
 
+        #region Unity Methods
+
         private void Start() => SetState<Idle>();
 
         private void Update() => CurrentState.OnUpdateState(this);
+
+        #endregion
+
+        #region Event methods
 
         public void OnConversating(IPassableData rawData)
         {
@@ -65,5 +74,9 @@ namespace YagizAyer.Root.Scripts.Npc
                 }
             });
         }
+
+        #endregion
+        
+        internal void PlayAnimation(int animationHash) => myAnimator.Play(animationHash);
     }
 }

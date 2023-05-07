@@ -304,5 +304,24 @@ namespace YagizAyer.Root.Scripts.Helpers
             var actionStringWithSpaces = actionString.Replace("_", " ");
             return Enum.TryParse(actionStringWithSpaces, true, out action);
         }
+        
+        
+        /// <summary>
+        /// Converts Enums to int using AnimationHashing system
+        /// </summary>
+        /// <param name="me">Caller Enum</param>
+        /// <typeparam name="T">Enum type</typeparam>
+        /// <returns>Hashed int</returns>
+        /// <exception cref="ArgumentException">Given argument is not an enum</exception>
+        /// <example>
+        /// <code>
+        /// myAnimationController.Play(MyAnimationsEnum.Walk.ToAnimationHash());
+        /// </code>
+        /// </example>
+        public static int ToAnimationHash<T>(this T me) where T : struct
+        {
+            if (!typeof(T).IsEnum) throw new ArgumentException($"Argument {typeof(T).FullName} is not an Enum");
+            return Animator.StringToHash(me.ToString());
+        }
     }
 }

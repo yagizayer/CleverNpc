@@ -4,7 +4,7 @@ namespace YagizAyer.Root.Scripts.Helpers
 {
     public enum PossibleNpcActions
     {
-        Talk,
+        Idle,
         Attack,
         Follow
     }

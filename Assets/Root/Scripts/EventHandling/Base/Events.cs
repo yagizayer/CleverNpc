@@ -4,6 +4,7 @@ namespace YagizAyer.Root.Scripts.EventHandling.Base
     {
         Null = 0,
         Movement = 10,  // input
+        Look = 15,  // input
         Interact = 20,  // input
         Record = 30,    // input
         Cancel = 35,    // input

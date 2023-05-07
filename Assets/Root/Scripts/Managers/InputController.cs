@@ -45,5 +45,8 @@ namespace YagizAyer.Root.Scripts.Managers
             if (context.started) return;
             Channels.Cancel.Raise(context.performed.ToPassableData());
         }
+
+        public void OnLook(InputAction.CallbackContext context) =>
+            Channels.Look.Raise(context.ReadValue<Vector2>().ToPassableData());
     }
 }

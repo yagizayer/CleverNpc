@@ -59,7 +59,7 @@ namespace YagizAyer.Root.Scripts.Npc
                         SetState<FriendlyChase>(rawData);
                         break;
                     default:
-                    case PossibleNpcActions.Talk:
+                    case PossibleNpcActions.Idle:
                         SetState<Conversation>(data.ConversationData);
                         break;
                 }

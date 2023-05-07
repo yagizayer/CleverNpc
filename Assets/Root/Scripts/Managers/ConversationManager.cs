@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using YagizAyer.Root.Scripts.ElevenLabsApiBase;
 using YagizAyer.Root.Scripts.EventHandling.Base;
+using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
 using YagizAyer.Root.Scripts.OpenAIApiBase;
 using YagizAyer.Root.Scripts.OpenAIApiBase.Helpers;
@@ -28,11 +29,8 @@ namespace YagizAyer.Root.Scripts.Managers
         [Header("References")]
         private AudioSource npcAudioSource;
 
-        [SerializeField]
-        private TextAsset chatInstructions;
-
-        [SerializeField]
-        private TextAsset chatHistory;
+        private static ConversationData _conversationData;
+        public void OnConversating(IPassableData rawData) => rawData.Validate(out _conversationData);
 
         // player audio file -> transcription
         internal static void RequestPlayerAudioTranscription(string path) =>
@@ -41,34 +39,41 @@ namespace YagizAyer.Root.Scripts.Managers
                 {
                     var audioTranscription = AudioResponseData.FromJson(json).Text;
                     Debug.Log("prompt : " + audioTranscription);
+
+                    _conversationData.NpcManager.chatHistory += "\nPlayer: " + audioTranscription + "\nNpc: ";
                     Instance.RequestTextScoring(audioTranscription);
+
+                    Channels.PlayerAnswering.Raise(audioTranscription.ToPassableData());
                 });
 
         // transcription -> Npc Answer
         private void RequestTextScoring(string prompt) =>
-            OpenAIApiClient.RequestJsonAsync(chatInstructions.text + chatHistory.text + prompt,
+            OpenAIApiClient.RequestJsonAsync(
+                _conversationData.NpcManager.AnsweringInstructions +
+                _conversationData.NpcManager.chatHistory +
+                prompt,
                 completionSettings,
                 onComplete: response =>
                 {
                     if (response == null) return;
 
                     var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
+                    Debug.LogWarning("answer : " + fullAnswer);
                     var splitAnswer = fullAnswer.Split('|');
-                    var score = splitAnswer[0].Trim();
+                    var score = float.Parse(splitAnswer[0].Trim().Replace('.', ','));
                     var answer = splitAnswer[1].Trim();
 
-                    // save prompt and answer to chat history
-                    var chatHistoryFile = new StreamWriter(@"Assets/Resources/OpenAIApi/ChatHistory.txt", true);
-                    chatHistoryFile.WriteLine(prompt);
-                    chatHistoryFile.WriteLine("\nNpc: " + fullAnswer + "\nPlayer: ");
-                    chatHistoryFile.Close();
+                    _conversationData.NpcManager.chatHistory += fullAnswer;
+                    elevenLabsAc.RequestAsync(answer, onComplete: clip => { npcAudioSource.PlayOneShot(clip); });
 
-                    elevenLabsAc.RequestAsync(answer, onComplete: clip =>
+                    var answerData = new NpcAnswerData
                     {
-                        npcAudioSource.PlayOneShot(clip);
-                    });
+                        BehaviourScore = score,
+                        Answer = answer,
+                        ConversationData = _conversationData
+                    };
 
-                    Channels.NpcAnswering.Raise((score + "/" + answer).ToPassableData());
+                    Channels.NpcAnswering.Raise(answerData);
                 });
     }
 }

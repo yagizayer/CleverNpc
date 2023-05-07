@@ -40,6 +40,7 @@ namespace YagizAyer.Root.Scripts.OpenAIApiBase
             var formData = new WWWForm();
 
             formData.AddField("model", "whisper-1"); // currently only whisper-1 is supported
+            formData.AddField("language", "en"); 
             
             var clip = File.ReadAllBytes(clipPath);
             formData.AddBinaryData("file", clip, "audio.wav", "audio/wav");

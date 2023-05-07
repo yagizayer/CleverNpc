@@ -8,6 +8,7 @@ namespace YagizAyer.Root.Scripts.EventHandling.Base
         Record = 30,    // input
         Conversating = 40,
         Recording = 50,
+        PlayerAnswering = 55,
         NpcThinking = 60,
         NpcAnswering = 70,
     }

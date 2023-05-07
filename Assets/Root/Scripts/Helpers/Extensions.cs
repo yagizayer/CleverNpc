@@ -172,14 +172,6 @@ namespace YagizAyer.Root.Scripts.Helpers
         }
 
         /// <summary>
-        ///  Returns true if the value is between the range.
-        /// </summary>
-        /// <param name="value"> The value to check.</param>
-        /// <param name="range"> The range to check.</param>
-        /// <returns> True if the value is between the range.</returns>
-        public static bool IsBetween(this float value, Vector2 range) => value >= range.x && value <= range.y;
-
-        /// <summary>
         /// Saves the AudioClip as a WAV file.
         /// </summary>
         /// <param name="clip"> The AudioClip to save.</param>
@@ -298,20 +290,19 @@ namespace YagizAyer.Root.Scripts.Helpers
         }
 
         /// <summary>
-        ///  Returns the string between the start and end strings.
+        ///  Converts string to a PossibleNpcActions enum
         /// </summary>
-        /// <param name="text"> The text to search.</param>
-        /// <param name="start"> The start string.</param>
-        /// <param name="end"> The end string.</param>
-        /// <returns> The string between the start and end strings.</returns>
-        public static string GetBetween(this string text, string start, string end)
+        /// <param name="actionString"> The string to convert.</param>
+        /// <param name="action"> The converted enum.</param>
+        /// <returns> True if the string was converted successfully.</returns>
+        public static bool ToNpcAction(this string actionString, out PossibleNpcActions action)
         {
-            var startIndex = text.IndexOf(start, StringComparison.Ordinal);
-            if (startIndex == -1) return string.Empty;
+            action = PossibleNpcActions.Talk;
+            if (string.IsNullOrEmpty(actionString)) return false;
+            if (Enum.TryParse(actionString, true, out action)) return true;
 
-            startIndex += start.Length;
-            var endIndex = text.IndexOf(end, startIndex, StringComparison.Ordinal);
-            return endIndex == -1 ? string.Empty : text.Substring(startIndex, endIndex - startIndex);
+            var actionStringWithSpaces = actionString.Replace("_", " ");
+            return Enum.TryParse(actionStringWithSpaces, true, out action);
         }
     }
 }

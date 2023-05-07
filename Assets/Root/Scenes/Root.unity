@@ -1584,7 +1584,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879011554}
-  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
+  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2172,7 +2172,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037173684}
-  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
+  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
   m_LocalPosition: {x: 3, y: 6.05, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2302,20 +2302,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugText: {fileID: 780453169}
-  acceptableBehaviourRange: {x: -1, y: 1}
-  currentBehaviourScore: 0
   <AnsweringInstructions>k__BackingField: "The following is a conversation with an
-    Npc on a Rpg game and player comes to ask you something. \nNpc have to help them
-    out. \nNpc have to answer in single sentence. \nNpc will start your sentence
-    with positivity score of player's last sentence. \nScore has to between -1 and
-    1.\nAn example answer of Npc is like this : \nNpc : -0.34 | You don't want to
-    go to that cave it has monsters in it."
+    Npc on a Rpg game and player comes to ask you something. \r\nNpc have to answer
+    in single sentence. \r\nNpc will declare what they are doing at the start of
+    the answer like this:\r\n\"Talk | I am happy to help!\".\r\nAvaliable actions
+    are \"Talk\", \"Follow\", \"Attack\"\r."
   chatHistory: 'Player: Hi I want some help please.
 
-    Npc: 0.5 | I am happy to
-    help!
+    Npc: Talk | I am happy
+    to help!
 
-'
+    Player: I need you to follow me!
+
+    Npc: Follow | Sure, I will
+    follow you!
+
+    Player: I need to practice my sword. Attack me!
+
+    Npc:
+    Attack | I will help you with your skills.
+
+    Player: Thats enough stop attacking
+    me.
+
+    Npc: Talk | I hope i have been useful.'
 --- !u!54 &1071742541
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3467,7 +3477,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542859260}
-  m_LocalRotation: {x: 0.19489568, y: -0.000000029431293, z: 0.0000000058481766, w: 0.980824}
+  m_LocalRotation: {x: 0.1948957, y: 0.0000000034291936, z: -6.8140127e-10, w: 0.980824}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

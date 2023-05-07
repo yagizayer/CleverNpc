@@ -28,6 +28,8 @@ namespace YagizAyer.Root.Scripts.Managers
         [Header("References")]
         private AudioSource npcAudioSource;
 
+        private int _retryCount;
+
         private static ConversationData _conversationData;
         public void OnConversating(IPassableData rawData) => rawData.Validate(out _conversationData);
 
@@ -38,8 +40,6 @@ namespace YagizAyer.Root.Scripts.Managers
                 {
                     var audioTranscription = AudioResponseData.FromJson(json).Text;
                     Debug.Log("prompt : " + audioTranscription);
-
-                    _conversationData.NpcManager.chatHistory += "\nPlayer: " + audioTranscription + "\nNpc: ";
                     Instance.RequestTextScoring(audioTranscription);
 
                     Channels.PlayerAnswering.Raise(audioTranscription.ToPassableData());
@@ -48,16 +48,19 @@ namespace YagizAyer.Root.Scripts.Managers
         // transcription -> Npc Answer
         private void RequestTextScoring(string prompt)
         {
-            var answeringPrompt = _conversationData.NpcManager.AnsweringInstructions +
-                                  _conversationData.NpcManager.chatHistory +
-                                  prompt;
+            _retryCount++;
+            var npc = _conversationData.NpcManager;
+            var answeringPrompt = npc.AnsweringInstructions +
+                                  npc.chatHistory +
+                                  "\nPlayer: " + prompt + "\nNpc: ";
 
             OpenAIApiClient.RequestJsonAsync(answeringPrompt, completionSettings, onComplete: response =>
             {
                 var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
                 Debug.LogWarning("answer : " + fullAnswer);
                 if (ValidateResponse(fullAnswer)) ResponseCb(response);
-                else RequestTextScoring(prompt); // try again
+                else if (_retryCount < 5) RequestTextScoring(prompt); // try again
+                else Debug.LogWarning("Invalid response from OpenAI");
             });
         }
 
@@ -65,9 +68,10 @@ namespace YagizAyer.Root.Scripts.Managers
         {
             if (response == null) return;
 
+            _retryCount = 0;
             var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
             var splitAnswer = fullAnswer.Split('|');
-            var score = float.Parse(splitAnswer[0].Trim().Replace('.', ','));
+            splitAnswer[0].Trim().ToNpcAction(out var action);
             var answer = splitAnswer[1].Trim();
 
             _conversationData.NpcManager.chatHistory += fullAnswer;
@@ -78,7 +82,7 @@ namespace YagizAyer.Root.Scripts.Managers
                 var answerData = new NpcAnswerData
                 {
                     AudioClip = clip,
-                    BehaviourScore = score,
+                    Action = action,
                     Answer = answer,
                     ConversationData = _conversationData
                 };
@@ -91,8 +95,9 @@ namespace YagizAyer.Root.Scripts.Managers
         {
             if (response == null) return false;
             var splitAnswer = response.Split('|');
-            return splitAnswer.Length == 2 && 
-                   float.TryParse(splitAnswer[0].Trim().Replace('.', ','), out _);
+
+            return splitAnswer.Length == 2 &&
+                   splitAnswer[0].Trim().ToNpcAction(out _);
         }
     }
 }

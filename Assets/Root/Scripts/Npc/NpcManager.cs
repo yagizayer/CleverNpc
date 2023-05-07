@@ -1,5 +1,6 @@
 // NpcManager.cs
 
+using System;
 using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
@@ -10,12 +11,6 @@ namespace YagizAyer.Root.Scripts.Npc
 {
     public class NpcManager : StateManager<NpcManager>
     {
-        [SerializeField]
-        private Vector2 acceptableBehaviourRange;
-
-        [SerializeField]
-        private float currentBehaviourScore;
-
         [field: SerializeField]
         [field: TextArea(10, 10)]
         public string AnsweringInstructions { get; private set; }
@@ -53,12 +48,21 @@ namespace YagizAyer.Root.Scripts.Npc
         {
             if (!rawData.Validate(out NpcAnswerData data)) return;
 
-            currentBehaviourScore += data.BehaviourScore;
-
             GameManager.ExecuteDelayed(data.AudioClip.length - .3f, () =>
             {
-                if (currentBehaviourScore <= acceptableBehaviourRange.x) SetState<HostileChase>(rawData);
-                if (currentBehaviourScore >= acceptableBehaviourRange.y) SetState<FriendlyChase>(rawData);
+                switch (data.Action)
+                {
+                    case PossibleNpcActions.Attack:
+                        SetState<HostileChase>(rawData);
+                        break;
+                    case PossibleNpcActions.Follow:
+                        SetState<FriendlyChase>(rawData);
+                        break;
+                    default:
+                    case PossibleNpcActions.Talk:
+                        SetState<Conversation>(data.ConversationData);
+                        break;
+                }
             });
         }
     }

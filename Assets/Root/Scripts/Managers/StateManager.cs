@@ -36,8 +36,8 @@ namespace YagizAyer.Root.Scripts.Managers
         {
             if (CurrentState != null)
             {
-                if (CurrentState != newState) CurrentState.OnExitState(this as TOwner, rawData);
                 if (CurrentState.ExcludedInterrupters.Contains(newState)) return;
+                if (CurrentState != newState) CurrentState.OnExitState(this as TOwner, rawData);
             }
 
             CurrentState = newState;

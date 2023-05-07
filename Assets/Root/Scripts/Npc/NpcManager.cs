@@ -35,6 +35,13 @@ namespace YagizAyer.Root.Scripts.Npc
             SetState<Conversation>(rawData);
         }
 
+        public void OnCancelConversating(IPassableData rawData)
+        {
+            if (!rawData.Validate(out ConversationData data)) return;
+            if (data.NpcManager != this) return;
+            if (CurrentState is Conversation) SetState<PlayerInRange>(data.PlayerManager.ToPassableData());
+        }
+
         public void OnNpcThinking(IPassableData rawData)
         {
             if (!rawData.Validate(out PassableDataBase<NpcManager> data)) return;
@@ -48,8 +55,11 @@ namespace YagizAyer.Root.Scripts.Npc
 
             currentBehaviourScore += data.BehaviourScore;
 
-            if (currentBehaviourScore < acceptableBehaviourRange.x) SetState<HostileChase>();
-            if (currentBehaviourScore > acceptableBehaviourRange.y) SetState<FriendlyChase>();
+            GameManager.ExecuteDelayed(data.AudioClip.length - .3f, () =>
+            {
+                if (currentBehaviourScore <= acceptableBehaviourRange.x) SetState<HostileChase>(rawData);
+                if (currentBehaviourScore >= acceptableBehaviourRange.y) SetState<FriendlyChase>(rawData);
+            });
         }
     }
 }

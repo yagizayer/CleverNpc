@@ -53,6 +53,15 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""193bdbb0-0ca9-403f-94a3-a4a23c5a384a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Record"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""994bc974-d596-4413-b522-a068ae4cab12"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -143,6 +163,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_Record = m_Gameplay.FindAction("Record", throwIfNotFound: true);
+        m_Gameplay_Cancel = m_Gameplay.FindAction("Cancel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -205,6 +226,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Movement;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_Record;
+    private readonly InputAction m_Gameplay_Cancel;
     public struct GameplayActions
     {
         private @InputActions m_Wrapper;
@@ -212,6 +234,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputAction @Record => m_Wrapper.m_Gameplay_Record;
+        public InputAction @Cancel => m_Wrapper.m_Gameplay_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -230,6 +253,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Record.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRecord;
                 @Record.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRecord;
                 @Record.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRecord;
+                @Cancel.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCancel;
+                @Cancel.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCancel;
+                @Cancel.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCancel;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -243,6 +269,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Record.started += instance.OnRecord;
                 @Record.performed += instance.OnRecord;
                 @Record.canceled += instance.OnRecord;
+                @Cancel.started += instance.OnCancel;
+                @Cancel.performed += instance.OnCancel;
+                @Cancel.canceled += instance.OnCancel;
             }
         }
     }
@@ -252,5 +281,6 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnRecord(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
 }

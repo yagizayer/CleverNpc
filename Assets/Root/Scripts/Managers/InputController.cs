@@ -25,14 +25,25 @@ namespace YagizAyer.Root.Scripts.Managers
         public void OnMovement(InputAction.CallbackContext context) =>
             Channels.Movement.Raise(context.ReadValue<Vector2>().ToPassableData());
 
-        public void OnInteract(InputAction.CallbackContext context) =>
-            Channels.Interact.Raise(context.started.ToPassableData());
+        public void OnInteract(InputAction.CallbackContext context)
+        {
+            // held down = true, released = false
+            if (context.started) return;
+            Channels.Interact.Raise(context.performed.ToPassableData());
+        }
 
         public void OnRecord(InputAction.CallbackContext context)
         {
             // held down = true, released = false
             if (context.started) return;
             Channels.Record.Raise(context.performed.ToPassableData());
+        }
+
+        public void OnCancel(InputAction.CallbackContext context)
+        {
+            // held down = true, released = false
+            if (context.started) return;
+            Channels.Cancel.Raise(context.performed.ToPassableData());
         }
     }
 }

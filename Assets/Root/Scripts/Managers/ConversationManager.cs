@@ -1,6 +1,5 @@
 // ConversationManager.cs
 
-using System.IO;
 using UnityEngine;
 using YagizAyer.Root.Scripts.ElevenLabsApiBase;
 using YagizAyer.Root.Scripts.EventHandling.Base;
@@ -47,33 +46,53 @@ namespace YagizAyer.Root.Scripts.Managers
                 });
 
         // transcription -> Npc Answer
-        private void RequestTextScoring(string prompt) =>
-            OpenAIApiClient.RequestJsonAsync(
-                _conversationData.NpcManager.AnsweringInstructions +
-                _conversationData.NpcManager.chatHistory +
-                prompt,
-                completionSettings,
-                onComplete: response =>
+        private void RequestTextScoring(string prompt)
+        {
+            var answeringPrompt = _conversationData.NpcManager.AnsweringInstructions +
+                                  _conversationData.NpcManager.chatHistory +
+                                  prompt;
+
+            OpenAIApiClient.RequestJsonAsync(answeringPrompt, completionSettings, onComplete: response =>
+            {
+                var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
+                Debug.LogWarning("answer : " + fullAnswer);
+                if (ValidateResponse(fullAnswer)) ResponseCb(response);
+                else RequestTextScoring(prompt); // try again
+            });
+        }
+
+        private void ResponseCb(string response)
+        {
+            if (response == null) return;
+
+            var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
+            var splitAnswer = fullAnswer.Split('|');
+            var score = float.Parse(splitAnswer[0].Trim().Replace('.', ','));
+            var answer = splitAnswer[1].Trim();
+
+            _conversationData.NpcManager.chatHistory += fullAnswer;
+            elevenLabsAc.RequestAsync(answer, onComplete: clip =>
+            {
+                npcAudioSource.PlayOneShot(clip);
+
+                var answerData = new NpcAnswerData
                 {
-                    if (response == null) return;
+                    AudioClip = clip,
+                    BehaviourScore = score,
+                    Answer = answer,
+                    ConversationData = _conversationData
+                };
 
-                    var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
-                    Debug.LogWarning("answer : " + fullAnswer);
-                    var splitAnswer = fullAnswer.Split('|');
-                    var score = float.Parse(splitAnswer[0].Trim().Replace('.', ','));
-                    var answer = splitAnswer[1].Trim();
+                Channels.NpcAnswering.Raise(answerData);
+            });
+        }
 
-                    _conversationData.NpcManager.chatHistory += fullAnswer;
-                    elevenLabsAc.RequestAsync(answer, onComplete: clip => { npcAudioSource.PlayOneShot(clip); });
-
-                    var answerData = new NpcAnswerData
-                    {
-                        BehaviourScore = score,
-                        Answer = answer,
-                        ConversationData = _conversationData
-                    };
-
-                    Channels.NpcAnswering.Raise(answerData);
-                });
+        private bool ValidateResponse(string response)
+        {
+            if (response == null) return false;
+            var splitAnswer = response.Split('|');
+            return splitAnswer.Length == 2 && 
+                   float.TryParse(splitAnswer[0].Trim().Replace('.', ','), out _);
+        }
     }
 }

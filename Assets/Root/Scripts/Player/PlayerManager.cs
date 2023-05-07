@@ -29,11 +29,17 @@ namespace YagizAyer.Root.Scripts.Player
 
         public void OnRecordingInput(IPassableData rawData)
         {
-            if (CurrentState is not States.Conversation conversationState) return;
+            if (CurrentState is not Conversation conversationState) return;
             if (!rawData.Validate(out PassableDataBase<bool> data)) return;
 
             if (data.Value) conversationState.StartRecording();
             else conversationState.StopRecording();
+        }
+
+        public void OnCancelInput(IPassableData _)
+        {
+            if (CurrentState is not Conversation conversation) return;
+            Channels.CancelConversating.Raise(conversation.ConversationData);
         }
 
         #endregion
@@ -43,7 +49,6 @@ namespace YagizAyer.Root.Scripts.Player
         public void OnInteractionInput(IPassableData rawData)
         {
             if (InteractableNpcs.Count == 0) return;
-            if (CurrentState is Conversation) return;
 
             var conversationData = new ConversationData
             {
@@ -53,12 +58,8 @@ namespace YagizAyer.Root.Scripts.Player
             Channels.Conversating.Raise(conversationData);
             SetState<Conversation>(conversationData);
         }
-        public void OnNpcAnswering(IPassableData rawData)
-        {
-            if (InteractableNpcs.Count == 0) return;
-            if (CurrentState is not Conversation conversation) return;
-            conversation.OnNpcAnswering();
-        }
+        
+        public void OnCancelConversation(IPassableData _) => SetState<Idle>(); 
 
         #endregion
 
@@ -69,7 +70,6 @@ namespace YagizAyer.Root.Scripts.Player
             if (!other.TryGetComponent(out NpcManager npc)) return;
             npc.SetState<Npc.States.PlayerInRange>(this.ToPassableData());
             InteractableNpcs.Add(npc);
-            SetState<NpcInRange>(npc.ToPassableData());
         }
 
         public void OnNpcExitRange(Collider other)

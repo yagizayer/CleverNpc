@@ -6,6 +6,7 @@ namespace YagizAyer.Root.Scripts.Helpers
     {
         Idle,
         Attack,
-        Follow
+        Follow,
+        Train
     }
 }

@@ -16,7 +16,6 @@ namespace YagizAyer.Root.Scripts.Npc.States
         // ReSharper disable Unity.PerformanceAnalysis
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
-            MyOwner.PlayAnimation(Animations.Walk.ToAnimationHash());
             _agent ??= MyOwner.GetComponentInChildren<NavMeshAgent>();
             if (rawData.Validate(out PassableDataBase<Vector3> v3Data)) _agent.SetDestination(v3Data.Value);
             if (rawData.Validate(out PassableDataBase<Transform> trData)) StartCoroutine(MoveToTarget_CO(trData.Value));
@@ -30,7 +29,6 @@ namespace YagizAyer.Root.Scripts.Npc.States
         public override void OnExitState(NpcManager stateManager, IPassableData rawData = null)
         {
             _moveTarget = null;
-            MyOwner.PlayAnimation(Animations.Idle.ToAnimationHash());
         }
 
         private IEnumerator MoveToTarget_CO(Transform target)
@@ -40,7 +38,8 @@ namespace YagizAyer.Root.Scripts.Npc.States
             var stopDuration = new WaitForSeconds(1f);
             while (_moveTarget is not null)
             {
-                if (_agent.remainingDistance < _agent.stoppingDistance)
+                var distance = Vector3.Distance(_moveTarget.position, MyOwner.transform.position);
+                if (distance < _agent.stoppingDistance)
                 {
                     OnReachTarget(target);
                     yield return stopDuration;

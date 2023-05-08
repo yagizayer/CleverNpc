@@ -14,5 +14,7 @@ namespace YagizAyer.Root.Scripts.EventHandling.Base
         NpcThinking = 60,
         NpcAnswering = 70,
         CancelConversating = 80,
+        NpcAttacking = 90,
+        NpcAttackEnding = 100,
     }
 }

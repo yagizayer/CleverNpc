@@ -3,6 +3,7 @@
 using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
+using YagizAyer.Root.Scripts.Managers;
 
 namespace YagizAyer.Root.Scripts.Npc.States
 {
@@ -12,8 +13,7 @@ namespace YagizAyer.Root.Scripts.Npc.States
 
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
-            if (!rawData.Validate(out ConversationData data)) return;
-            base.OnEnterState(stateManager, data.PlayerManager.ToPassableData()); // for PlayerInRange.cs
+            base.OnEnterState(stateManager, GameManager.Player.transform.ToPassableData());
         }
     }
 }

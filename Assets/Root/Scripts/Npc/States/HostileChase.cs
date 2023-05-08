@@ -4,23 +4,24 @@ using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
+using YagizAyer.Root.Scripts.Managers;
 
 namespace YagizAyer.Root.Scripts.Npc.States
 {
     public class HostileChase : Move
     {
-        [SerializeField]
-        private ParticleSystem chaseEffect;
-
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
-            if (!rawData.Validate(out NpcAnswerData data)) return;
-            chaseEffect.Play();
-            Channels.CancelConversating.Raise(data.ConversationData);
-            base.OnEnterState(stateManager, data.ConversationData.PlayerManager.transform.ToPassableData());
+            if (!rawData.Validate(out PassableDataBase<Transform> data)) return;
+            Channels.CancelConversating.Raise(MyOwner.ToPassableData());
+            base.OnEnterState(stateManager, rawData);
         }
 
         protected override void OnReachTarget(Transform target) =>
-            MyOwner.PlayAnimation(Animations.Attack.ToAnimationHash());
+            GameManager.ExecuteDelayed(1f, () =>
+            {
+                if (MyOwner.CurrentState is HostileChase)
+                    MyOwner.SetState<Attack>(target.ToPassableData());
+            });
     }
 }

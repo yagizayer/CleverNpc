@@ -5,6 +5,7 @@ using YagizAyer.Root.Scripts.ElevenLabsApiBase;
 using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
+using YagizAyer.Root.Scripts.Npc;
 using YagizAyer.Root.Scripts.OpenAIApiBase;
 using YagizAyer.Root.Scripts.OpenAIApiBase.Helpers;
 using YagizAyer.Root.Scripts.OpenAIApiBase.Presets;
@@ -30,8 +31,13 @@ namespace YagizAyer.Root.Scripts.Managers
 
         private int _retryCount;
 
-        private static ConversationData _conversationData;
-        public void OnConversating(IPassableData rawData) => rawData.Validate(out _conversationData);
+        private static NpcManager _npc;
+
+        public void OnConversating(IPassableData rawData)
+        {
+            if (!rawData.Validate(out PassableDataBase<NpcManager> data)) return;
+            _npc = data.Value;
+        }
 
         // player audio file -> transcription
         internal static void RequestPlayerAudioTranscription(string path) =>
@@ -49,30 +55,40 @@ namespace YagizAyer.Root.Scripts.Managers
         private void RequestTextScoring(string prompt)
         {
             _retryCount++;
-            var npc = _conversationData.NpcManager;
-            npc.chatHistory += "\nPlayer: " + prompt + "\nNpc: ";
-            var answeringPrompt = npc.AnsweringInstructions + npc.chatHistory;
+            var npc = _npc;
+            var tempHistoryAppend = "\nPlayer: " + prompt + "\nNpc: ";
+            var answeringPrompt = npc.AnsweringInstructions + npc.chatHistory + tempHistoryAppend;
             OpenAIApiClient.RequestJsonAsync(answeringPrompt, completionSettings, onComplete: response =>
             {
                 var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
                 Debug.LogWarning("answer : " + fullAnswer);
-                if (ValidateResponse(fullAnswer)) ResponseCb(response);
+                if (ValidateResponse(fullAnswer))
+                {
+                    npc.chatHistory += tempHistoryAppend;
+                    ResponseCb(response);
+                }
                 else if (_retryCount < 5) RequestTextScoring(prompt); // try again
-                else Debug.LogWarning("Invalid response from OpenAI");
+                else
+                {
+                    Debug.LogWarning("Answer is not valid");
+                    Debug.LogWarning("Default : " + npc.DefaultAnswer);
+                    npc.chatHistory += tempHistoryAppend;
+                    ResponseCb(npc.DefaultAnswer, true);
+                }
             });
         }
 
-        private void ResponseCb(string response)
+        private void ResponseCb(string response, bool isDefault = false)
         {
             if (response == null) return;
 
             _retryCount = 0;
-            var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
+            var fullAnswer = isDefault ? response : CompletionResponseData.FromJson(response).Choices[0].Text;
             var splitAnswer = fullAnswer.Split('|');
             splitAnswer[0].Trim().ToNpcAction(out var action);
             var answer = splitAnswer[1].Trim();
 
-            _conversationData.NpcManager.chatHistory += fullAnswer;
+            _npc.chatHistory += fullAnswer;
             elevenLabsAc.RequestAsync(answer, onComplete: clip =>
             {
                 npcAudioSource.PlayOneShot(clip);
@@ -82,7 +98,7 @@ namespace YagizAyer.Root.Scripts.Managers
                     AudioClip = clip,
                     Action = action,
                     Answer = answer,
-                    ConversationData = _conversationData
+                    Npc = _npc
                 };
 
                 Channels.NpcAnswering.Raise(answerData);

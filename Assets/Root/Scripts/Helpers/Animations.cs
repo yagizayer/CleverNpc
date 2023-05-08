@@ -7,6 +7,7 @@ namespace YagizAyer.Root.Scripts.Helpers
         Default,
         Idle,
         Walk,
-        Attack
+        Attack,
+        TakeDamage,
     }
 }

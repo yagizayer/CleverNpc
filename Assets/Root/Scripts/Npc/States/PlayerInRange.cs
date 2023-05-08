@@ -23,8 +23,8 @@ namespace YagizAyer.Root.Scripts.Npc.States
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
             interactionUI.SetActive(true);
-            if (rawData.Validate(out PassableDataBase<PlayerManager> data))
-                _lookTarget = data.Value.transform;
+            if (rawData.Validate(out PassableDataBase<Transform> data))
+                _lookTarget = data.Value;
         }
 
         public override void OnUpdateState(NpcManager stateManager, IPassableData rawData = null)

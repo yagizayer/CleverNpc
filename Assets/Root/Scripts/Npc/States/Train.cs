@@ -1,4 +1,4 @@
-// FriendlyChase.cs
+// Train.cs
 
 using UnityEngine;
 using YagizAyer.Root.Scripts.EventHandling.Base;
@@ -7,7 +7,7 @@ using YagizAyer.Root.Scripts.Helpers;
 
 namespace YagizAyer.Root.Scripts.Npc.States
 {
-    public class FriendlyChase : Move
+    public class Train : Move
     {
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
@@ -15,5 +15,8 @@ namespace YagizAyer.Root.Scripts.Npc.States
             Channels.CancelConversating.Raise(MyOwner.ToPassableData());
             base.OnEnterState(stateManager, data.Value.ToPassableData());
         }
+
+        protected override void OnReachTarget(Transform target) =>
+            MyOwner.SetState<Attack>(target.ToPassableData());
     }
 }

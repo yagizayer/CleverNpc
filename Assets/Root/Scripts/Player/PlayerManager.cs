@@ -42,7 +42,7 @@ namespace YagizAyer.Root.Scripts.Player
         public void OnCancelInput(IPassableData _)
         {
             if (CurrentState is not Conversation conversation) return;
-            Channels.CancelConversating.Raise(conversation.ConversationData);
+            Channels.CancelConversating.Raise(conversation.Npc.ToPassableData());
         }
 
         #endregion
@@ -53,16 +53,15 @@ namespace YagizAyer.Root.Scripts.Player
         {
             if (InteractableNpcs.Count == 0) return;
 
-            var conversationData = new ConversationData
-            {
-                NpcManager = transform.GetClosest(InteractableNpcs),
-                PlayerManager = this
-            };
-            Channels.Conversating.Raise(conversationData);
-            SetState<Conversation>(conversationData);
+            var npc = transform.GetClosest(InteractableNpcs).ToPassableData();
+            Channels.Conversating.Raise(npc);
+            SetState<Conversation>(npc);
         }
 
-        public void OnCancelConversation(IPassableData _) => SetState<Idle>();
+        public void OnCancelConversation(IPassableData _)
+        {
+            if (CurrentState is Conversation) SetState<Idle>();
+        }
 
         #endregion
 
@@ -71,14 +70,14 @@ namespace YagizAyer.Root.Scripts.Player
         public void OnNpcEnterRange(Collider other)
         {
             if (!other.TryGetComponent(out NpcManager npc)) return;
-            npc.SetState<Npc.States.PlayerInRange>(this.ToPassableData());
+            npc.SetState<Npc.States.PlayerInRange>(transform.ToPassableData());
             InteractableNpcs.Add(npc);
         }
 
         public void OnNpcExitRange(Collider other)
         {
             if (!other.TryGetComponent(out NpcManager npc)) return;
-            npc.SetState<Npc.States.Idle>(this.ToPassableData());
+            npc.SetState<Npc.States.Idle>(transform.ToPassableData());
             InteractableNpcs.Remove(npc);
         }
 

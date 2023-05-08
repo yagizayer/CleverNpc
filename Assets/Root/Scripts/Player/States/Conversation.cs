@@ -5,20 +5,21 @@ using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
 using YagizAyer.Root.Scripts.Managers;
+using YagizAyer.Root.Scripts.Npc;
 
 namespace YagizAyer.Root.Scripts.Player.States
 {
     public class Conversation : Idle
     {
         private AudioClip _recording;
-        private ConversationData _conversationData;
 
-        public ConversationData ConversationData => _conversationData;
+        public NpcManager Npc { get; private set; }
 
         public override void OnEnterState(PlayerManager stateManager, IPassableData rawData = null)
         {
-            if (!rawData.Validate(out _conversationData)) return;
-            base.OnEnterState(stateManager, _conversationData.NpcManager.ToPassableData()); // for NpcInRange.cs
+            if (!rawData.Validate(out PassableDataBase<NpcManager> data)) return;
+            Npc = data.Value;
+            base.OnEnterState(stateManager, Npc.ToPassableData()); // for NpcInRange.cs
         }
 
         internal void StartRecording()
@@ -38,7 +39,7 @@ namespace YagizAyer.Root.Scripts.Player.States
 
             var path = _recording.Trim().SaveAsWav("Assets/Root/Audios/PlayerInput.wav");
 
-            Channels.NpcThinking.Raise(_conversationData.NpcManager.ToPassableData());
+            Channels.NpcThinking.Raise(Npc.ToPassableData());
             ConversationManager.RequestPlayerAudioTranscription(path);
             _recording = null;
         }

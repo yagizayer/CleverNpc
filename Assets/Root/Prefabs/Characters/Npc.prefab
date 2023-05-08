@@ -116,7 +116,6 @@ GameObject:
   - component: {fileID: 9107959073967125399}
   - component: {fileID: 9107959073967125401}
   - component: {fileID: 9107959073967125403}
-  - component: {fileID: 7073788675137997783}
   - component: {fileID: 7876136615930778360}
   m_Layer: 0
   m_Name: States
@@ -198,7 +197,6 @@ MonoBehaviour:
   excludedInterrupters:
   - {fileID: 9107959073967125399}
   - {fileID: 9107959073967125397}
-  chaseEffect: {fileID: 8982394370412125443}
 --- !u!114 &9107959073967125403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,22 +207,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d209c4eaabb94cb4b8ce1f9eaa99a937, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  excludedInterrupters:
-  - {fileID: 9107959073967125399}
-  - {fileID: 9107959073967125397}
-  chaseEffect: {fileID: 8982394369696708789}
---- !u!114 &7073788675137997783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9107959073967125393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd909a497e0a4a6cb2b259fe31cec4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   excludedInterrupters:
@@ -754,11 +736,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 10
+  m_Speed: 5
   m_Acceleration: 20
   avoidancePriority: 50
   m_AngularSpeed: 1000
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1029,6 +1011,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugText: {fileID: 9107959074397129603}
   myAnimator: {fileID: 4877031262651014021}
+  myAgent: {fileID: 9107959074684219619}
   <DefaultAnswer>k__BackingField: Idle | Maybe we should know each other before that.
     What else can i do for you?
   <AnsweringInstructions>k__BackingField: "The following is a conversation with an
@@ -1816,33 +1799,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onForward3:
-    m_PersistentCalls:
-      m_Calls: []
-  onForward4:
-    m_PersistentCalls:
-      m_Calls: []
-  onForward5:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &5441868009353924719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7308838405595007583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1becc6454cf945279bd7decc1e86dfcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onForward1:
-    m_PersistentCalls:
-      m_Calls: []
-  onForward2:
-    m_PersistentCalls:
-      m_Calls: []
   onForward3:
     m_PersistentCalls:
       m_Calls: []

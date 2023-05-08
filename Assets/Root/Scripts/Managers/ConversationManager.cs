@@ -1,5 +1,6 @@
 // ConversationManager.cs
 
+using System;
 using UnityEngine;
 using YagizAyer.Root.Scripts.ElevenLabsApiBase;
 using YagizAyer.Root.Scripts.EventHandling.Base;
@@ -29,9 +30,28 @@ namespace YagizAyer.Root.Scripts.Managers
         [Header("References")]
         private AudioSource npcAudioSource;
 
+        [SerializeField]
+        private PossibleNpcActions testAction = PossibleNpcActions.Null;
+
         private int _retryCount;
 
         private static NpcManager _npc;
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (testAction == PossibleNpcActions.Null) return;
+            if (!Application.isPlaying) return;
+
+            Channels.NpcAnswering.Raise(new NpcAnswerData
+            {
+                Action = testAction,
+                Answer = "Test Answer",
+            });
+            
+            testAction = PossibleNpcActions.Null;
+        }
+#endif
 
         public void OnConversating(IPassableData rawData)
         {

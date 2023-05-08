@@ -2,6 +2,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
@@ -15,6 +16,9 @@ namespace YagizAyer.Root.Scripts.Npc
         [SerializeField]
         private Animator myAnimator;
 
+        [SerializeField]
+        private NavMeshAgent myAgent;
+
         [field: SerializeField] public string DefaultAnswer { get; private set; }
 
         [field: SerializeField]
@@ -24,6 +28,8 @@ namespace YagizAyer.Root.Scripts.Npc
         [SerializeField]
         [TextArea(20, 10)]
         public string chatHistory;
+        
+        public NavMeshAgent Agent => myAgent;
 
         #region Unity Methods
 
@@ -82,9 +88,10 @@ namespace YagizAyer.Root.Scripts.Npc
         public void OnNpcAnswering(IPassableData rawData)
         {
             if (!rawData.Validate(out NpcAnswerData data)) return;
-            if (data.Npc != this) return;
+            // if (data.Npc != this) return;
+            var waitDuration = data.AudioClip != null ? data.AudioClip.length - .3f : .1f;
 
-            GameManager.ExecuteDelayed(data.AudioClip.length - .3f, () =>
+            GameManager.ExecuteDelayed(waitDuration, () =>
             {
                 switch (data.Action)
                 {
@@ -92,13 +99,14 @@ namespace YagizAyer.Root.Scripts.Npc
                         SetState<HostileChase>(GameManager.Player.transform.ToPassableData());
                         break;
                     case PossibleNpcActions.Train:
-                        SetState<Train>(GameManager.DummyTarget.transform.ToPassableData());
+                        SetState<HostileChase>(GameManager.DummyTarget.transform.ToPassableData());
                         break;
                     case PossibleNpcActions.Follow:
                         SetState<FriendlyChase>(GameManager.Player.transform.ToPassableData());
                         break;
-                    default:
+                    case PossibleNpcActions.Null:
                     case PossibleNpcActions.Idle:
+                    default:
                         SetState<Conversation>(GameManager.Player.transform.ToPassableData());
                         break;
                 }
@@ -107,6 +115,7 @@ namespace YagizAyer.Root.Scripts.Npc
 
         #endregion
 
-        internal void PlayAnimation(int animationHash) => myAnimator.Play(animationHash);
+        internal void SetAnimationFloat(int floatHash, float value) => myAnimator.SetFloat(floatHash, value);
+        internal void SetAnimationTrigger(int triggerHash) => myAnimator.SetTrigger(triggerHash);
     }
 }

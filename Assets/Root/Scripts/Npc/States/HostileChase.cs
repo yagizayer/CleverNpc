@@ -17,11 +17,13 @@ namespace YagizAyer.Root.Scripts.Npc.States
             base.OnEnterState(stateManager, rawData);
         }
 
-        protected override void OnReachTarget(Transform target) =>
+        protected override void OnReachTarget()
+        {
             GameManager.ExecuteDelayed(1f, () =>
             {
                 if (MyOwner.CurrentState is HostileChase)
-                    MyOwner.SetState<Attack>(target.ToPassableData());
+                    MyOwner.SetState<Attack>(MoveTarget.ToPassableData());
             });
+        }
     }
 }

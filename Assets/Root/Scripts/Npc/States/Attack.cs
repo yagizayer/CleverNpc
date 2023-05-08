@@ -13,7 +13,7 @@ namespace YagizAyer.Root.Scripts.Npc.States
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
             if (!rawData.Validate(out PassableDataBase<Transform> data)) return;
-            stateManager.PlayAnimation(Animations.Attack.ToAnimationHash());
+            stateManager.SetAnimationTrigger(Animations.Attack.ToAnimationHash());
             Target = data.Value;
         }
 

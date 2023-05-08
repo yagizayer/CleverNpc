@@ -69,7 +69,6 @@ namespace YagizAyer.Root.Scripts.Managers
                 onComplete: json =>
                 {
                     var audioTranscription = AudioResponseData.FromJson(json).Text;
-                    Debug.Log("prompt : " + audioTranscription);
                     Instance.RequestTextScoring(audioTranscription);
 
                     Channels.PlayerAnswering.Raise(audioTranscription.ToPassableData());
@@ -84,7 +83,6 @@ namespace YagizAyer.Root.Scripts.Managers
             OpenAIApiClient.RequestJsonAsync(answeringPrompt, completionSettings, onComplete: response =>
             {
                 var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
-                Debug.LogWarning("answer : " + fullAnswer);
                 if (ValidateResponse(fullAnswer))
                 {
                     npc.chatHistory += tempHistoryAppend;
@@ -93,8 +91,6 @@ namespace YagizAyer.Root.Scripts.Managers
                 else if (++_retryCount < retryLimit) RequestTextScoring(prompt); // try again
                 else
                 {
-                    Debug.LogWarning("Answer is not valid");
-                    Debug.LogWarning("Default : " + npc.DefaultAnswer);
                     npc.chatHistory += tempHistoryAppend;
                     ResponseCb(npc.DefaultAnswer, true);
                 }

@@ -5,7 +5,8 @@ namespace YagizAyer.Root.Scripts.Helpers
     public enum Animations
     {
         Default,
-        Idle,
+        Show,
+        Hide,
         Walk,
         Attack,
         TakeDamage,

@@ -27,13 +27,10 @@ namespace YagizAyer.Root.Scripts.Player.States
             _recording = Microphone.Start(null, false, 10, 44100);
             if (_recording == null) return;
             Channels.Recording.Raise(null);
-
-            Debug.Log("Recording started");
         }
 
         internal void StopRecording()
         {
-            Debug.Log("Recording stopped");
             if (Microphone.IsRecording(null)) Microphone.End(null);
             else Debug.LogError("Microphone is not recording");
 

@@ -14,12 +14,22 @@ namespace YagizAyer.Root.Scripts.Npc
     public class NpcManager : StateManager<NpcManager>
     {
         [SerializeField]
+        [Header("Countdowns")]
+        private Animator listeningCountdown;
+
+        [SerializeField]
+        private Animator thinkingCountdown;
+
+        [SerializeField]
+        [Header("References")]
         private Animator myAnimator;
 
         [SerializeField]
         private NavMeshAgent myAgent;
 
-        [field: SerializeField] public string DefaultAnswer { get; private set; }
+        [field: SerializeField]
+        [field: Header("Limitations")]
+        public string DefaultAnswer { get; private set; }
 
         [field: SerializeField]
         [field: TextArea(10, 10)]
@@ -28,7 +38,7 @@ namespace YagizAyer.Root.Scripts.Npc
         [SerializeField]
         [TextArea(20, 10)]
         public string chatHistory;
-        
+
         public NavMeshAgent Agent => myAgent;
 
         #region Unity Methods
@@ -78,17 +88,31 @@ namespace YagizAyer.Root.Scripts.Npc
             if (CurrentState is Conversation) SetState<PlayerInRange>(GameManager.Player.transform.ToPassableData());
         }
 
+        public void OnPlayerRecordInput(IPassableData rawData)
+        {
+            if (!rawData.Validate(out PassableDataBase<bool> data)) return;
+
+            if (CurrentState is not Conversation) return;
+
+            if (data.Value) listeningCountdown.Play(Animations.Show.ToAnimationHash());
+            if (!data.Value) listeningCountdown.Play(Animations.Hide.ToAnimationHash());
+        }
+
         public void OnNpcThinking(IPassableData rawData)
         {
             if (!rawData.Validate(out PassableDataBase<NpcManager> data)) return;
+            if (CurrentState is not Conversation) return;
             if (data.Value != this) return;
-            // do nothing
+            listeningCountdown.Play(Animations.Hide.ToAnimationHash());
+            thinkingCountdown.Play(Animations.Show.ToAnimationHash());
         }
 
         public void OnNpcAnswering(IPassableData rawData)
         {
             if (!rawData.Validate(out NpcAnswerData data)) return;
-            // if (data.Npc != this) return;
+            if (data.Npc != this) return;
+
+            thinkingCountdown.Play(Animations.Hide.ToAnimationHash());
             var waitDuration = data.AudioClip != null ? data.AudioClip.length - .3f : .1f;
 
             GameManager.ExecuteDelayed(waitDuration, () =>

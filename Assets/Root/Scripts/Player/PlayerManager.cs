@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
@@ -16,7 +17,12 @@ namespace YagizAyer.Root.Scripts.Player
         [SerializeField]
         private Animator myAnimator;
 
+        [SerializeField]
+        private NavMeshAgent myAgent;
+
         public List<NpcManager> InteractableNpcs { get; } = new();
+        
+        public NavMeshAgent Agent => myAgent;
 
         #region UnityEvents
 
@@ -83,6 +89,6 @@ namespace YagizAyer.Root.Scripts.Player
 
         #endregion
 
-        internal void PlayAnimation(int animationHash) => myAnimator.Play(animationHash);
+        internal void SetAnimationFloat(int floatHash, float value) => myAnimator.SetFloat(floatHash, value);
     }
 }

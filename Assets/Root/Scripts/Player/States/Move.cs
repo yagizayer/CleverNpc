@@ -1,7 +1,6 @@
 // Move.cs
 
 using UnityEngine;
-using UnityEngine.AI;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
 using YagizAyer.Root.Scripts.Managers;
@@ -10,15 +9,10 @@ namespace YagizAyer.Root.Scripts.Player.States
 {
     public class Move : State<PlayerManager>
     {
-        [SerializeField]
-        private NavMeshAgent agent;
-        
-
         private Vector3 _positionOffset;
 
         public override void OnEnterState(PlayerManager stateManager, IPassableData rawData = null)
         {
-            MyOwner.PlayAnimation(Animations.Walk.ToAnimationHash());
             if (!rawData.Validate(out PassableDataBase<Vector2> data)) return;
             _positionOffset = new Vector3(data.Value.x, 0, data.Value.y).normalized;
         }
@@ -30,9 +24,10 @@ namespace YagizAyer.Root.Scripts.Player.States
                 MyOwner.SetState<Idle>();
                 return;
             }
-            
+
             var rotation = GameManager.MainCamera.transform.rotation;
-            agent.SetDestination(transform.position + rotation * _positionOffset);
+            MyOwner.Agent.SetDestination(transform.position + rotation * _positionOffset);
+            MyOwner.SetAnimationFloat(Animations.Walk.ToAnimationHash(), MyOwner.Agent.velocity.magnitude / MyOwner.Agent.speed);
         }
 
         public override void OnExitState(PlayerManager stateManager, IPassableData rawData = null)

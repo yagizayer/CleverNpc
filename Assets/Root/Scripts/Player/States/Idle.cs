@@ -14,16 +14,22 @@ namespace YagizAyer.Root.Scripts.Player.States
         private float rotationSpeed = 5;
 
         private Transform _lookTarget;
+        private const float TransitionDuration = .25f;
+        private float _transitionTimer;
 
         public override void OnEnterState(PlayerManager stateManager, IPassableData rawData = null)
         {
-            MyOwner.PlayAnimation(Animations.Idle.ToAnimationHash());
             if (rawData.Validate(out PassableDataBase<NpcManager> data))
                 _lookTarget = data.Value.transform;
+            _transitionTimer = 0;
         }
 
         public override void OnUpdateState(PlayerManager stateManager, IPassableData rawData = null)
         {
+            _transitionTimer += Time.deltaTime;
+            var animationValue = Mathf.Clamp01(1 - _transitionTimer / TransitionDuration);
+            MyOwner.SetAnimationFloat(Animations.Walk.ToAnimationHash(), animationValue);
+            
             if (_lookTarget is null) return;
             if (_lookTarget.position - MyOwner.transform.position == Vector3.zero) return;
             var targetRotation = Quaternion.LookRotation(_lookTarget.position - MyOwner.transform.position);

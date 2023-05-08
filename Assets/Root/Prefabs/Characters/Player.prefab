@@ -444,6 +444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugText: {fileID: 7686278444174820292}
   myAnimator: {fileID: 2494362086633469528}
+  myAgent: {fileID: 7686278442834265608}
 --- !u!1 &7686278443195787326
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,7 +836,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   excludedInterrupters: []
-  agent: {fileID: 7686278442834265608}
 --- !u!1 &8438744727221445468
 GameObject:
   m_ObjectHideFlags: 0

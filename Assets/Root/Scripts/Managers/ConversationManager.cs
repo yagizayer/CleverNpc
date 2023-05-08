@@ -15,6 +15,10 @@ namespace YagizAyer.Root.Scripts.Managers
 {
     public class ConversationManager : SingletonBase<ConversationManager>
     {
+        [Range(0, 10)]
+        [SerializeField]
+        private int retryLimit = 2;
+
         [SerializeField]
         [Header("ElevenLabs Settings")]
         private ElevenLabsApiClient elevenLabsAc;
@@ -48,7 +52,7 @@ namespace YagizAyer.Root.Scripts.Managers
                 Action = testAction,
                 Answer = "Test Answer",
             });
-            
+
             testAction = PossibleNpcActions.Null;
         }
 #endif
@@ -74,7 +78,6 @@ namespace YagizAyer.Root.Scripts.Managers
         // transcription -> Npc Answer
         private void RequestTextScoring(string prompt)
         {
-            _retryCount++;
             var npc = _npc;
             var tempHistoryAppend = "\nPlayer: " + prompt + "\nNpc: ";
             var answeringPrompt = npc.AnsweringInstructions + npc.chatHistory + tempHistoryAppend;
@@ -87,7 +90,7 @@ namespace YagizAyer.Root.Scripts.Managers
                     npc.chatHistory += tempHistoryAppend;
                     ResponseCb(response);
                 }
-                else if (_retryCount < 5) RequestTextScoring(prompt); // try again
+                else if (++_retryCount < retryLimit) RequestTextScoring(prompt); // try again
                 else
                 {
                     Debug.LogWarning("Answer is not valid");

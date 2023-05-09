@@ -38,7 +38,7 @@ namespace YagizAyer.Root.Scripts.Npc.States
             else
             {
                 animationValue = MyOwner.Agent.velocity.magnitude / MyOwner.Agent.speed;
-                MyOwner.SetAnimationFloat(Animations.Walk.ToAnimationHash(), animationValue);
+                MyOwner.SetAnimationFloat(Animations.Walk.ToAnimationHash(), animationValue > .75f ? 1 : animationValue);
             }
         }
 

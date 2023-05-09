@@ -297,7 +297,7 @@ namespace YagizAyer.Root.Scripts.Helpers
         /// <returns> True if the string was converted successfully.</returns>
         public static bool ToNpcAction(this string actionString, out PossibleNpcActions action)
         {
-            action = PossibleNpcActions.Idle;
+            action = PossibleNpcActions.Talk;
             if (string.IsNullOrEmpty(actionString)) return false;
             if (Enum.TryParse(actionString, true, out action)) return true;
 

@@ -65,7 +65,7 @@ namespace YagizAyer.Root.Scripts.Npc
                 Attacker = this,
                 Target = attack.Target
             };
-            Channels.NpcAttacking.Raise(attackData.ToPassableData());
+            Channels.NpcAttacking.Raise(attackData);
         }
 
         public void RaiseNpcAttackEndingChannel()
@@ -77,7 +77,7 @@ namespace YagizAyer.Root.Scripts.Npc
                 Target = attack.Target
             };
             attack.Chase();
-            Channels.NpcAttackEnding.Raise(attackData.ToPassableData());
+            Channels.NpcAttackEnding.Raise(attackData);
         }
 
         public void OnConversating(IPassableData rawData)
@@ -135,7 +135,7 @@ namespace YagizAyer.Root.Scripts.Npc
                         SetState<FriendlyChase>(GameManager.Player.transform.ToPassableData());
                         break;
                     case PossibleNpcActions.Null:
-                    case PossibleNpcActions.Idle:
+                    case PossibleNpcActions.Talk:
                     default:
                         SetState<Conversation>(GameManager.Player.transform.ToPassableData());
                         break;

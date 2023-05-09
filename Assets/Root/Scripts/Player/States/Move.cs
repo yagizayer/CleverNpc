@@ -27,7 +27,8 @@ namespace YagizAyer.Root.Scripts.Player.States
 
             var rotation = GameManager.MainCamera.transform.rotation;
             MyOwner.Agent.SetDestination(transform.position + rotation * _positionOffset);
-            MyOwner.SetAnimationFloat(Animations.Walk.ToAnimationHash(), MyOwner.Agent.velocity.magnitude / MyOwner.Agent.speed);
+            var animationValue = MyOwner.Agent.velocity.magnitude / MyOwner.Agent.speed;
+            MyOwner.SetAnimationFloat(Animations.Walk.ToAnimationHash(), animationValue > .75f ? 1 : animationValue);
         }
 
         public override void OnExitState(PlayerManager stateManager, IPassableData rawData = null)

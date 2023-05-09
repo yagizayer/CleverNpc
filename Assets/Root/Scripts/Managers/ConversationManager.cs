@@ -108,12 +108,14 @@ namespace YagizAyer.Root.Scripts.Managers
                 else if (++_retryCount < retryLimit) RequestTextScoring(requestId, prompt); // try again
                 else
                 {
+                    Debug.LogWarning(fullAnswer);
                     npc.chatHistory += tempHistoryAppend + npc.DefaultAnswer;
                     npcAudioSource.PlayOneShot(npc.DefaultAudioClip);
+                    _requestTracker[requestId] = true;
                     var answerData = new NpcAnswerData
                     {
                         AudioClip = npc.DefaultAudioClip,
-                        Action = PossibleNpcActions.Idle,
+                        Action = PossibleNpcActions.Talk,
                         Answer = npc.DefaultAnswer,
                         Npc = npc
                     };
@@ -164,19 +166,28 @@ namespace YagizAyer.Root.Scripts.Managers
         private IEnumerator TimeoutRoutine(int hash, string prompt)
         {
             yield return new WaitForSeconds(Time.time + timeoutLimit);
-            if (_requestTracker[hash]) yield break; // no problem
+            if (_requestTracker[hash])
+            {
+                _requestTracker.Remove(hash);
+                yield break; // no problem
+            }
+
+            _requestTracker.Remove(hash);
 
             // timed out
             _npc.chatHistory += "\nPlayer: " + prompt + "\nNpc: " + _npc.TimedOutAnswer;
+            npcAudioSource.PlayOneShot(_npc.TimedOutAudioClip);
+
             var answerData = new NpcAnswerData
             {
                 AudioClip = _npc.TimedOutAudioClip,
-                Action = PossibleNpcActions.Idle,
+                Action = PossibleNpcActions.Talk,
                 Answer = _npc.TimedOutAnswer,
                 Npc = _npc
             };
 
             Channels.NpcAnswering.Raise(answerData);
+            _requestTracker.Remove(hash);
         }
     }
 }

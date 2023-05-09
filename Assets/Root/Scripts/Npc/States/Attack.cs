@@ -1,13 +1,27 @@
 // Attack.cs
 
+using System;
 using UnityEngine;
+using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
+using YagizAyer.Root.Scripts.Managers;
+using Random = UnityEngine.Random;
 
 namespace YagizAyer.Root.Scripts.Npc.States
 {
     public class Attack : State<NpcManager>
     {
+        [SerializeField]
+        private ParticleSystem attackEffect;
+
+        [SerializeField]
+        private AudioSource attackSound;
+
+        [Range(0, 2)]
+        [SerializeField]
+        private float attackDelay = .5f;
+
         public Transform Target { get; private set; }
 
         private Quaternion _targetRotation;
@@ -16,8 +30,14 @@ namespace YagizAyer.Root.Scripts.Npc.States
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
             if (!rawData.Validate(out PassableDataBase<Transform> data)) return;
-            stateManager.SetAnimationTrigger(Animations.Attack.ToAnimationHash());
             Target = data.Value;
+            
+            stateManager.SetAnimationTrigger(Animations.Attack.ToAnimationHash());
+            
+            GameManager.ExecuteDelayed(attackDelay, () => { attackEffect.Play(); });
+            if (Vector3.Distance(MyOwner.transform.position, Target.position) < 2f)
+                PlaySoundEffect();
+            
             _targetRotation = Quaternion.LookRotation(Target.position - MyOwner.transform.position);
         }
 
@@ -35,5 +55,12 @@ namespace YagizAyer.Root.Scripts.Npc.States
         }
 
         public void Chase() => MyOwner.SetState<HostileChase>(Target.ToPassableData());
+
+        private void PlaySoundEffect()
+        {
+            attackSound.pitch = Mathf.Clamp(attackSound.pitch + Random.value * .1f - .05f, .8f, 1.2f);
+            attackSound.volume = Mathf.Clamp(attackSound.volume + Random.value * .1f - .05f, .3f, .7f);
+            attackSound.Play();
+        }
     }
 }

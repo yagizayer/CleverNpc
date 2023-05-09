@@ -1,6 +1,8 @@
 // ConversationManager.cs
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using YagizAyer.Root.Scripts.ElevenLabsApiBase;
 using YagizAyer.Root.Scripts.EventHandling.Base;
@@ -18,6 +20,10 @@ namespace YagizAyer.Root.Scripts.Managers
         [Range(0, 10)]
         [SerializeField]
         private int retryLimit = 2;
+
+        [Range(0, 20)]
+        [SerializeField]
+        private float timeoutLimit = 10;
 
         [SerializeField]
         [Header("ElevenLabs Settings")]
@@ -40,6 +46,8 @@ namespace YagizAyer.Root.Scripts.Managers
         private int _retryCount;
 
         private static NpcManager _npc;
+
+        private Dictionary<int, bool> _requestTracker = new();
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -64,52 +72,72 @@ namespace YagizAyer.Root.Scripts.Managers
         }
 
         // player audio file -> transcription
-        internal static void RequestPlayerAudioTranscription(string path) =>
+        internal static void RequestPlayerAudioTranscription(string path)
+        {
             OpenAIApiClient.RequestFormAsync(path, Instance.audioSettings,
                 onComplete: json =>
                 {
                     var audioTranscription = AudioResponseData.FromJson(json).Text;
-                    Instance.RequestTextScoring(audioTranscription);
+                    var requestId = Time.time.GetHashCode();
+                    Instance._requestTracker.Add(requestId, false);
+
+                    Instance.StartCoroutine(Instance.TimeoutRoutine(Time.time.GetHashCode(), audioTranscription));
+                    Instance.RequestTextScoring(requestId, audioTranscription);
 
                     Channels.PlayerAnswering.Raise(audioTranscription.ToPassableData());
                 });
+        }
 
         // transcription -> Npc Answer
-        private void RequestTextScoring(string prompt)
+        private void RequestTextScoring(int requestId, string prompt)
         {
+            if (!_requestTracker.ContainsKey(requestId)) return; // timed out and removed
             var npc = _npc;
             var tempHistoryAppend = "\nPlayer: " + prompt + "\nNpc: ";
             var answeringPrompt = npc.AnsweringInstructions + npc.chatHistory + tempHistoryAppend;
+
+
             OpenAIApiClient.RequestJsonAsync(answeringPrompt, completionSettings, onComplete: response =>
             {
                 var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
                 if (ValidateResponse(fullAnswer))
                 {
                     npc.chatHistory += tempHistoryAppend;
-                    ResponseCb(response);
+                    ResponseCb(requestId, response);
                 }
-                else if (++_retryCount < retryLimit) RequestTextScoring(prompt); // try again
+                else if (++_retryCount < retryLimit) RequestTextScoring(requestId, prompt); // try again
                 else
                 {
-                    npc.chatHistory += tempHistoryAppend;
-                    ResponseCb(npc.DefaultAnswer, true);
+                    npc.chatHistory += tempHistoryAppend + npc.DefaultAnswer;
+                    npcAudioSource.PlayOneShot(npc.DefaultAudioClip);
+                    var answerData = new NpcAnswerData
+                    {
+                        AudioClip = npc.DefaultAudioClip,
+                        Action = PossibleNpcActions.Idle,
+                        Answer = npc.DefaultAnswer,
+                        Npc = npc
+                    };
+
+                    Channels.NpcAnswering.Raise(answerData);
                 }
             });
         }
 
-        private void ResponseCb(string response, bool isDefault = false)
+        private void ResponseCb(int requestId, string response)
         {
             if (response == null) return;
+            if (!_requestTracker.ContainsKey(requestId)) return; // timed out and removed
 
             _retryCount = 0;
-            var fullAnswer = isDefault ? response : CompletionResponseData.FromJson(response).Choices[0].Text;
+            var fullAnswer = CompletionResponseData.FromJson(response).Choices[0].Text;
             var splitAnswer = fullAnswer.Split('|');
             splitAnswer[0].Trim().ToNpcAction(out var action);
             var answer = splitAnswer[1].Trim();
 
             _npc.chatHistory += fullAnswer;
-            elevenLabsAc.RequestAsync(answer, onComplete: clip =>
+            elevenLabsAc.RequestAsync(answer, _npc.Voice, onComplete: clip =>
             {
+                _requestTracker[requestId] = true;
                 npcAudioSource.PlayOneShot(clip);
 
                 var answerData = new NpcAnswerData
@@ -131,6 +159,24 @@ namespace YagizAyer.Root.Scripts.Managers
 
             return splitAnswer.Length == 2 &&
                    splitAnswer[0].Trim().ToNpcAction(out _);
+        }
+
+        private IEnumerator TimeoutRoutine(int hash, string prompt)
+        {
+            yield return new WaitForSeconds(Time.time + timeoutLimit);
+            if (_requestTracker[hash]) yield break; // no problem
+
+            // timed out
+            _npc.chatHistory += "\nPlayer: " + prompt + "\nNpc: " + _npc.TimedOutAnswer;
+            var answerData = new NpcAnswerData
+            {
+                AudioClip = _npc.TimedOutAudioClip,
+                Action = PossibleNpcActions.Idle,
+                Answer = _npc.TimedOutAnswer,
+                Npc = _npc
+            };
+
+            Channels.NpcAnswering.Raise(answerData);
         }
     }
 }

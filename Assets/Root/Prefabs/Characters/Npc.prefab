@@ -1634,6 +1634,11 @@ MonoBehaviour:
   myAgent: {fileID: 9107959074684219619}
   <DefaultAnswer>k__BackingField: Idle | Maybe we should know each other before that.
     What else can i do for you?
+  <DefaultAudioClip>k__BackingField: {fileID: 8300000, guid: 95af2cd1cd236124a8fbebdab53021f3, type: 3}
+  <TimedOutAnswer>k__BackingField: I can be a gullible idiot some times. Please repeat
+    your request.
+  <TimedOutAudioClip>k__BackingField: {fileID: 8300000, guid: 1d5f7a8ad21196341b2fee607d16b15b, type: 3}
+  <Voice>k__BackingField: 6
   <AnsweringInstructions>k__BackingField: "The following is a conversation with an
     Npc on a Rpg game and player comes to ask you something. \r\nNpc have to answer
     in single sentence. \r\nNpc will declare what they are doing.\nAvaliable actions

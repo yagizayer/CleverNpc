@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityWebRequestAwaiter;
 using YagizAyer.Root.Scripts.ElevenLabsApiBase.Helpers;
-using YagizAyer.Root.Scripts.Managers;
 
 namespace YagizAyer.Root.Scripts.ElevenLabsApiBase
 {
@@ -18,15 +17,12 @@ namespace YagizAyer.Root.Scripts.ElevenLabsApiBase
         [SerializeField]
         private string url = "https://api.elevenlabs.io/v1/text-to-speech/";
 
-        [SerializeField]
-        private Voices voice = Voices.Arnold;
-
         private const int ChunkSize = 1024;
 
         private readonly string _auth =
             Environment.GetEnvironmentVariable("XI_API_KEY", EnvironmentVariableTarget.User);
 
-        internal async void RequestAsync(string textToVocalize, Action<AudioClip> onComplete)
+        internal async void RequestAsync(string textToVocalize, Voices voice, Action<AudioClip> onComplete)
         {
             var request = UnityWebRequest.Post(url + voice.ToVoiceID(), "POST");
             request.SetRequestHeader("Accept", "audio/mpeg");

@@ -40161,6 +40161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   retryLimit: 2
+  timeoutLimit: 10
   elevenLabsAc: {fileID: 11400000, guid: 1cc044a57b2ceab408c2c27f6ed66b3b, type: 2}
   completionSettings: {fileID: 11400000, guid: 7ce67cfa3d8dc184e943e08ae27fe127, type: 2}
   audioSettings: {fileID: 11400000, guid: 43a70ec90ff0ad040b347bd511419462, type: 2}

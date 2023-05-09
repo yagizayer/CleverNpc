@@ -14,6 +14,8 @@ namespace YagizAyer.Root.Scripts.Helpers
                 Instance = this as T;
             else
                 Destroy(gameObject);
+            
+            DontDestroyOnLoad(gameObject);
         }
     }
 }

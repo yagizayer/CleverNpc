@@ -3,6 +3,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using YagizAyer.Root.Scripts.ElevenLabsApiBase.Helpers;
 using YagizAyer.Root.Scripts.EventHandling.Base;
 using YagizAyer.Root.Scripts.EventHandling.BasicPassableData;
 using YagizAyer.Root.Scripts.Helpers;
@@ -14,14 +15,13 @@ namespace YagizAyer.Root.Scripts.Npc
     public class NpcManager : StateManager<NpcManager>
     {
         [SerializeField]
-        [Header("Countdowns")]
+        [Header("References")]
         private Animator listeningCountdown;
 
         [SerializeField]
         private Animator thinkingCountdown;
 
         [SerializeField]
-        [Header("References")]
         private Animator myAnimator;
 
         [SerializeField]
@@ -30,6 +30,12 @@ namespace YagizAyer.Root.Scripts.Npc
         [field: SerializeField]
         [field: Header("Limitations")]
         public string DefaultAnswer { get; private set; }
+
+        [field: SerializeField] public AudioClip DefaultAudioClip { get; private set; }
+        [field: SerializeField] public string TimedOutAnswer { get; private set; }
+        [field: SerializeField] public AudioClip TimedOutAudioClip { get; private set; }
+
+        [field: SerializeField] public Voices Voice { get; private set; }
 
         [field: SerializeField]
         [field: TextArea(10, 10)]
@@ -110,7 +116,7 @@ namespace YagizAyer.Root.Scripts.Npc
         public void OnNpcAnswering(IPassableData rawData)
         {
             if (!rawData.Validate(out NpcAnswerData data)) return;
-            if (data.Npc != this) return;
+            if (data.Npc != null && data.Npc != this) return; // if null it is for testing
 
             thinkingCountdown.Play(Animations.Hide.ToAnimationHash());
             var waitDuration = data.AudioClip != null ? data.AudioClip.length - .3f : .1f;

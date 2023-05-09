@@ -25,6 +25,7 @@ namespace YagizAyer.Root.Scripts.ElevenLabsApiBase
         internal async void RequestAsync(string textToVocalize, Voices voice, Action<AudioClip> onComplete)
         {
             var request = UnityWebRequest.Post(url + voice.ToVoiceID(), "POST");
+            request.SetRequestHeader("optimize_streaming_latency", "2");
             request.SetRequestHeader("Accept", "audio/mpeg");
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("xi-api-key", _auth);

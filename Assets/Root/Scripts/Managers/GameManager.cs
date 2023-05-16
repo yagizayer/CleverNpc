@@ -28,6 +28,7 @@ namespace YagizAyer.Root.Scripts.Managers
             MainCamera = Camera.main;
             DummyTarget = dummyTarget;
             Player = playerManager;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         public static void ExecuteDelayed(float delay, Action action) =>

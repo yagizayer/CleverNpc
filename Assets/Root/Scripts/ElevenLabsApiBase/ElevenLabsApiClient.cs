@@ -50,12 +50,15 @@ namespace YagizAyer.Root.Scripts.ElevenLabsApiBase
             }
 
             var responseBytes = request.downloadHandler.data;
-            var filePath = $"Assets/Root/Audios/NpcAnswer.mp3";
+            var filePath = $"Assets/Resources/Audios/NpcAnswer.mp3";
 
             await SaveAudioToFile(filePath, responseBytes);
-
+#if UNITY_EDITOR
             AssetDatabase.ImportAsset(filePath, ImportAssetOptions.ForceUpdate);
             var audioClip = AssetDatabase.LoadAssetAtPath<AudioClip>(filePath);
+            #else
+            var audioClip = Resources.Load<AudioClip>("Audios/NpcAnswer");
+            #endif
             onComplete(audioClip);
         }
 

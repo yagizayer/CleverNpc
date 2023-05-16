@@ -134,6 +134,10 @@ namespace YagizAyer.Root.Scripts.Npc
                     case PossibleNpcActions.Follow:
                         SetState<FriendlyChase>(GameManager.Player.transform.ToPassableData());
                         break;
+                    case PossibleNpcActions.Wait:
+                        Channels.CancelConversating.Raise(this.ToPassableData());
+                        SetState<Idle>();
+                        break;
                     case PossibleNpcActions.Null:
                     case PossibleNpcActions.Talk:
                     default:
@@ -146,6 +150,7 @@ namespace YagizAyer.Root.Scripts.Npc
         #endregion
 
         internal void SetAnimationFloat(int floatHash, float value) => myAnimator.SetFloat(floatHash, value);
+        internal float GetAnimationFloat(int floatHash) => myAnimator.GetFloat(floatHash);
         internal void SetAnimationTrigger(int triggerHash) => myAnimator.SetTrigger(triggerHash);
     }
 }

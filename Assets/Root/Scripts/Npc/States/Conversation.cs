@@ -9,8 +9,6 @@ namespace YagizAyer.Root.Scripts.Npc.States
 {
     public class Conversation : PlayerInRange
     {
-        private Vector2 _currentBehaviourOrientation;
-
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
             base.OnEnterState(stateManager, GameManager.Player.transform.ToPassableData());

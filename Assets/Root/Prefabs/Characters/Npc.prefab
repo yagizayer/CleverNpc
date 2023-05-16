@@ -881,6 +881,7 @@ GameObject:
   - component: {fileID: 9107959073967125403}
   - component: {fileID: 7876136615930778360}
   - component: {fileID: 1236859170}
+  - component: {fileID: 3974228193792782143}
   m_Layer: 0
   m_Name: States
   m_TagString: Untagged
@@ -993,6 +994,7 @@ MonoBehaviour:
   - {fileID: 9107959073967125397}
   attackEffect: {fileID: 657901356716984678}
   attackSound: {fileID: 1236859170}
+  attackMissedSound: {fileID: 3974228193792782143}
   attackDelay: 0.35
 --- !u!82 &1236859170
 AudioSource:
@@ -1005,6 +1007,102 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: adcf79dba22be7648b2d46827d3d1a20, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &3974228193792782143
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9107959073967125393}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 97efcc762ec1ccf4b85a6cc2537004a5, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
@@ -1774,26 +1872,31 @@ MonoBehaviour:
   <AnsweringInstructions>k__BackingField: "The following is a conversation with an
     Npc on a Rpg game and player comes to ask you something. \r\nNpc have to answer
     in single sentence. \r\nNpc will declare what they are doing.\nAvaliable actions
-    are \"Talk\", \"Follow\", \"Attack\"\r,\"Train\"."
+    are \"Talk\", \"Follow\", \"Attack\"\r,\"Train\", \"Wait\"."
   chatHistory: 'Player: I need you to follow me!
 
     Npc: Follow | Sure, I will
     follow you!
 
-    Player: I need to practice my sword. Attack me!
+    Player: I need to practice my sword. Show me what you got!
 
-    Npc: Attack
-    | I will help you with your skills.
+    Npc:
+    Attack | I will help you with your skills.
 
     Player: Thats enough stop attacking
-    me.
+    me. How are you?
 
-    Npc: Talk | I hope i have been useful.
+    Npc: Talk | I am fine Thanks!
 
     Player: You should train
     your skills.
 
-    Npc: Train | Of course! I will go and do some practice.'
+    Npc: Train | Of course! I will go and do some practice.
+
+    Player:
+    Thats enough, wait here for me.
+
+    Npc: Wait | I will wait for your arrival.'
 --- !u!1 &9107959074748774718
 GameObject:
   m_ObjectHideFlags: 0
@@ -2033,7 +2136,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 176.47
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114717734472609844, guid: a03db597940642d47aee33ea0a944180, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a03db597940642d47aee33ea0a944180, type: 3}
 --- !u!198 &657901356716984678 stripped
 ParticleSystem:

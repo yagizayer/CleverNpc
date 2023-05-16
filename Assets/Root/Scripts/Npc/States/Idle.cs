@@ -13,7 +13,8 @@ namespace YagizAyer.Root.Scripts.Npc.States
 
         public override void OnEnterState(NpcManager stateManager, IPassableData rawData = null)
         {
-            _transitionTimer = 0;
+            if (MyOwner.GetAnimationFloat(Animations.Walk.ToAnimationHash()) > 0)
+                _transitionTimer = 0;
         }
 
         public override void OnUpdateState(NpcManager stateManager, IPassableData rawData = null)

@@ -17,6 +17,8 @@ namespace YagizAyer.Root.Scripts.Npc.States
 
         [SerializeField]
         private AudioSource attackSound;
+        [SerializeField]
+        private AudioSource attackMissedSound;
 
         [Range(0, 2)]
         [SerializeField]
@@ -35,8 +37,7 @@ namespace YagizAyer.Root.Scripts.Npc.States
             stateManager.SetAnimationTrigger(Animations.Attack.ToAnimationHash());
             
             GameManager.ExecuteDelayed(attackDelay, () => { attackEffect.Play(); });
-            if (Vector3.Distance(MyOwner.transform.position, Target.position) < 2f)
-                PlaySoundEffect();
+                PlaySoundEffect(Vector3.Distance(MyOwner.transform.position, Target.position) < 2f);
             
             _targetRotation = Quaternion.LookRotation(Target.position - MyOwner.transform.position);
         }
@@ -56,11 +57,12 @@ namespace YagizAyer.Root.Scripts.Npc.States
 
         public void Chase() => MyOwner.SetState<HostileChase>(Target.ToPassableData());
 
-        private void PlaySoundEffect()
+        private void PlaySoundEffect(bool hit)
         {
-            attackSound.pitch = Mathf.Clamp(attackSound.pitch + Random.value * .1f - .05f, .8f, 1.2f);
-            attackSound.volume = Mathf.Clamp(attackSound.volume + Random.value * .1f - .05f, .3f, .7f);
-            attackSound.Play();
+            var targetSource = hit? attackSound : attackMissedSound;
+            targetSource.pitch = Mathf.Clamp(attackSound.pitch + Random.value * .1f - .05f, .8f, 1.2f);
+            targetSource.volume = Mathf.Clamp(attackSound.volume + Random.value * .1f - .05f, .3f, .7f);
+            targetSource.Play();
         }
     }
 }

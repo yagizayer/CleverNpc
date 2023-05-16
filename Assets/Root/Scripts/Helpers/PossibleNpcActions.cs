@@ -8,6 +8,7 @@ namespace YagizAyer.Root.Scripts.Helpers
         Talk,
         Attack,
         Follow,
-        Train
+        Train,
+        Wait
     }
 }
